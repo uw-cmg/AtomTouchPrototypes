@@ -18,18 +18,10 @@ public class AtomPhysics2D : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Time.timeScale = 1;
-		/*
-		Physics2D.IgnoreCollision(
-			CosmosAtomAttracter2D.self.gameObject.GetComponent<Collider2D>(), 
-			AtomDestroyer.self.gameObject.GetComponent<Collider2D>()
-		);
-		*/
 		Physics2D.IgnoreLayerCollision(
 			LayerMask.NameToLayer("AtomDestroyer"),
 			LayerMask.NameToLayer("AtomAttracter")
 		);
-		Debug.Log(Physics2D.GetIgnoreLayerCollision(LayerMask.NameToLayer("AtomDestroyer"),
-			LayerMask.NameToLayer("AtomAttracter")));
 	}
 	
 	// Update is called once per frame
@@ -40,6 +32,10 @@ public class AtomPhysics2D : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		for(int i=0; i < Ions.Count;i++){
+			if(Ions[i] == null){
+				Ions.Remove(Ions[i]);
+				continue;
+			}
 			Atom2D atom = Ions[i].GetComponent<Atom2D>();
 			atom.totalForce = Vector2.zero;
 			atom.Kick(); 

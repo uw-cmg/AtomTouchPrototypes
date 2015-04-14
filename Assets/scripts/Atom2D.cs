@@ -50,11 +50,11 @@ public class Atom2D : MonoBehaviour {
 		Vector2 viewportBottomPoint = Camera.main.WorldToViewportPoint(topPoint);
 
 		if(viewportRightPoint.x < -0.1f || viewportRightPoint.x > 1.1f){
-			Debug.Log(viewportRightPoint);
+//			Debug.Log(viewportRightPoint);
 			return false;
 		}
 		if(viewportLeftPoint.x < -0.1f || viewportLeftPoint.x > 1.1f){
-			Debug.Log(viewportLeftPoint);
+	//		Debug.Log(viewportLeftPoint);
 			return false;
 		}
 		if(viewportTopPoint.y < -0.1f || viewportTopPoint.y > 1.1f){

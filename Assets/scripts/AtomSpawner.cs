@@ -9,7 +9,7 @@ public class AtomSpawner : MonoBehaviour {
 	public GameObject clPrefab;
 	// Use this for initialization
 	void Awake(){
-		spawnFrequency = 5.0f;
+		spawnFrequency = 0.8f;
 	}
 	void Start () {
 		xMinYmin = Camera.main.ViewportToWorldPoint(Vector2.zero);
@@ -55,18 +55,19 @@ public class AtomSpawner : MonoBehaviour {
 				force.y = Mathf.Sin(forceAngleRnd) * force.x;
 			}
 			force.Normalize();
-			float forceMag = Random.Range(1.0f,5.0f);
-			Spawn(clPrefab, new Vector2(spawnX, spawnY), forceMag * force);
+			float forceMag = Random.Range(4.0f,10.0f);
+			StartCoroutine(Spawn(clPrefab, new Vector2(spawnX, spawnY), forceMag * force));
 
 		}
 		
 	}
-	public void Spawn(GameObject prefab, Vector2 spawnPos, Vector2 vel){
+	IEnumerator Spawn(GameObject prefab, Vector2 spawnPos, Vector2 vel){
 		
 		Quaternion rotation = Quaternion.Euler(0, 0, 0);
 		GameObject atom = Instantiate(prefab, spawnPos, rotation) as GameObject;
 		atom.GetComponent<Rigidbody2D>().velocity = vel;
 		atom.GetComponent<Rigidbody2D>().isKinematic = false;
+		yield return new WaitForSeconds(1.0f);
 		AtomPhysics2D.self.Ions.Add(atom);
 	}
 	// Update is called once per frame
