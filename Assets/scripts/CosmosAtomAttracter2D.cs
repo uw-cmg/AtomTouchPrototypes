@@ -42,7 +42,8 @@ public class CosmosAtomAttracter2D : Atom2D {
 		//check if hits another atom
 		Collider2D[] touchingOtherAtoms = Physics2D.OverlapCircleAll(
 			atomPos, 
-			GetComponent<CircleCollider2D>().radius
+			GetComponent<CircleCollider2D>().radius,
+			LayerMask.NameToLayer("Atom")
 		);
 		if(touchingOtherAtoms.Length > 1){
 			return;

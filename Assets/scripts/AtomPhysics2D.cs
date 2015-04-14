@@ -24,6 +24,12 @@ public class AtomPhysics2D : MonoBehaviour {
 			AtomDestroyer.self.gameObject.GetComponent<Collider2D>()
 		);
 		*/
+		Physics2D.IgnoreLayerCollision(
+			LayerMask.NameToLayer("AtomDestroyer"),
+			LayerMask.NameToLayer("AtomAttracter")
+		);
+		Debug.Log(Physics2D.GetIgnoreLayerCollision(LayerMask.NameToLayer("AtomDestroyer"),
+			LayerMask.NameToLayer("AtomAttracter")));
 	}
 	
 	// Update is called once per frame

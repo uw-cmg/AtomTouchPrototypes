@@ -21,5 +21,6 @@ public class AtomDestroyer : MonoBehaviour {
 			AtomPhysics2D.self.Ions.Remove(other.gameObject);
 			Destroy(other.gameObject);
 		}
+		Debug.Log(other.gameObject.name);
 	}
 }

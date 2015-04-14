@@ -62,7 +62,7 @@ public class AtomSpawner : MonoBehaviour {
 		
 	}
 	public void Spawn(GameObject prefab, Vector2 spawnPos, Vector2 vel){
-		Debug.Log("spawning atom");
+		
 		Quaternion rotation = Quaternion.Euler(0, 0, 0);
 		GameObject atom = Instantiate(prefab, spawnPos, rotation) as GameObject;
 		atom.GetComponent<Rigidbody2D>().velocity = vel;
