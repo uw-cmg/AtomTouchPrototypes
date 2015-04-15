@@ -2,10 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class AtomPhysics2D : MonoBehaviour {
-	public static AtomPhysics2D self;
+public class AtomPhysicsGuessGame2D : MonoBehaviour {
+	public static AtomPhysicsGuessGame2D self;
 	public List<GameObject> Ions;
-	public Atom2D targetAtom;
 
 	void Awake(){
 		self = this;
@@ -18,10 +17,7 @@ public class AtomPhysics2D : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Time.timeScale = 1;
-		Physics2D.IgnoreLayerCollision(
-			LayerMask.NameToLayer("AtomDestroyer"),
-			LayerMask.NameToLayer("AtomAttracter")
-		);
+
 	}
 	
 	// Update is called once per frame
@@ -45,9 +41,7 @@ public class AtomPhysics2D : MonoBehaviour {
 			if(!withinViewport){
 				//Destroy(atom.gameObject);
 				Ions.Remove(atom.gameObject);
-				if(atom == targetAtom){
-					UIControl.self.EndGame(false);
-				}
+				
 				Destroy(atom.gameObject);
 			}
 		}
@@ -85,14 +79,9 @@ public class AtomPhysics2D : MonoBehaviour {
 				//Debug.Log(otherRb.velocity);
 				other.totalForce += -forceDireciton * currToOther / distance / distance; 
 			}
-			//currRb.velocity = curr.vel;
-			currRb.velocity = Vector3.zero;
-			if(currRb.gameObject.GetComponent<Atom2D>().GetType() == typeof (MonsterAtom2D)){
-			
-			}else{
+				
+			currRb.AddForce(curr.totalForce);
 
-				currRb.AddForce(curr.totalForce);
-			}
 				
 		}
 	}
