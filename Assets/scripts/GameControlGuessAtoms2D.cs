@@ -44,8 +44,9 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 			//hide rendered atom
 			foreach(AtomGuessTarget2D atom in atomsToGuess){
 				atom.renderedAtom.GetComponent<Renderer>().enabled = false;
+				atom.predictedAtom.GetComponent<Renderer>().enabled = false;
 			}
-			
+			state = (int)State.PlayerGuessing;
 		}else if(state == (int)State.PlayerGuessing){
 			//on click
 			CheckMouseClick();
@@ -58,8 +59,9 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 			}
 		}
 	}
-	GameObject CreateAtomAtExpectedPosition(Vector2 pos){
-		return null;
+	void ShowPredictedAtom(Vector2 pos){
+		clickedTarget.predictedAtom.transform.position = pos;
+		clickedTarget.predictedAtom.GetComponent<Renderer>().enabled = true;
 	}
 	void CreateConnectingArrow(Vector2 pos){
 
@@ -71,7 +73,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		Vector2 mouseInWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		if(clickedTarget != null){
 			//draw transparent atom
-			clickedTarget.expectedNextPeriod = CreateAtomAtExpectedPosition(mouseInWorld);
+			ShowPredictedAtom(mouseInWorld);
 			//draw arrow
 			CreateConnectingArrow(mouseInWorld);
 			clickedTarget = null;

@@ -80,8 +80,9 @@ public class AtomPhysicsGuessGame2D : MonoBehaviour {
 				//Debug.Log(otherRb.velocity);
 				other.totalForce += -forceDireciton * currToOther / distance / distance; 
 			}
-				
-			currRb.AddForce(curr.totalForce);
+			if(currRb.gameObject.tag == "Atom"){
+				currRb.AddForce(curr.totalForce);
+			}
 
 				
 		}
