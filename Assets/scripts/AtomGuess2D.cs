@@ -4,14 +4,14 @@ using System.Collections;
 //for prototype #8: guess where atoms are at the start of
 //the next time period
 
-//Atoms with AtomGuess2D are just copy of atoms 
-//that the physics engine calculates, but do NOT
-//move and serve only as references of the old
-//positions of the atoms
-
-public class AtomGuess2D : Atom2D {
+//all normal atoms that are always rendered
+public class AtomGuess2D : MonoBehaviour{
 	//the model of this copy
-	public Atom2D original;
+	
+	public int charge;
+	public Vector2 totalForce = Vector2.zero;
+	public CircleCollider2D cc;
+
 	void Start () {	
 		
 	}

@@ -32,11 +32,11 @@ public class AtomPhysicsGuessGame2D : MonoBehaviour {
 				Ions.Remove(Ions[i]);
 				continue;
 			}
-			Atom2D atom = Ions[i].GetComponent<Atom2D>();
+			AtomGuess2D atom = Ions[i].GetComponent<AtomGuess2D>();
 			atom.totalForce = Vector2.zero;
-			atom.Kick(); 
+			//atom.Kick(); 
 			//check if atoms out of viewport, if so, destroy
-
+			/*
 			bool withinViewport = atom.WithinViewport();
 			if(!withinViewport){
 				//Destroy(atom.gameObject);
@@ -44,21 +44,22 @@ public class AtomPhysicsGuessGame2D : MonoBehaviour {
 				
 				Destroy(atom.gameObject);
 			}
+			*/
 		}
-		Atom2D curr;
-		Atom2D other;
+		AtomGuess2D curr;
+		AtomGuess2D other;
 		for(int i=0; i < Ions.Count;i++){
 			Rigidbody2D rb = Ions[i].GetComponent<Rigidbody2D>();
 			if(rb.velocity.magnitude < 1f){
-				rb.gameObject.GetComponent<Atom2D>().Kick();
+				//rb.gameObject.GetComponent<AtomGuess2D>().Kick();
 			}
 		}
 		for(int i=0; i < Ions.Count;i++){
-			curr = Ions[i].GetComponent<Atom2D>();
+			curr = Ions[i].GetComponent<AtomGuess2D>();
 			Rigidbody2D currRb = Ions[i].GetComponent<Rigidbody2D>();
 
 			for(int j=i+1; j < Ions.Count;j++){
-				other = Ions[j].GetComponent<Atom2D>();
+				other = Ions[j].GetComponent<AtomGuess2D>();
 
 				float distance = Vector3.Distance(curr.gameObject.transform.position, 
 				other.gameObject.transform.position);
