@@ -7,6 +7,9 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 	public int state;
 	public float allowedGuessTime; //in seconds
 	public float remainingGuessTime;
+	public float maxWaitingWhenUpdate;
+	public float remainingWaitingTime;
+
 	public AtomGuessTarget2D clickedTarget;
 	//assigned in inspector
 	public List<AtomGuessTarget2D> atomsToGuess;
@@ -18,13 +21,14 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 	void Awake(){
 		self = this;
 		allowedGuessTime = 10.0f;
-
+		maxWaitingWhenUpdate = 3.0f;
 	}
 	// Use this for initialization
 	void Start () {
 		//init
 		state = (int)State.PlayerGuessing;
 		remainingGuessTime = allowedGuessTime;
+		remainingWaitingTime = maxWaitingWhenUpdate;
 		clickedTarget = null;
 	}
 	
@@ -46,7 +50,13 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 				atom.renderedAtom.GetComponent<Renderer>().enabled = false;
 				atom.predictedAtom.GetComponent<Renderer>().enabled = false;
 			}
-			state = (int)State.PlayerGuessing;
+			if(remainingWaitingTime <= 0){
+				remainingWaitingTime = maxWaitingWhenUpdate;
+				state = (int)State.PlayerGuessing;
+			}else{
+				remainingWaitingTime -= Time.deltaTime;
+			}
+			
 		}else if(state == (int)State.PlayerGuessing){
 			//on click
 			CheckMouseClick();
@@ -68,7 +78,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 	}
 	//raycast to see if mouse clicked on a target
 	void CheckMouseClick(){
-		if(!Input.GetMouseButtonDown(0))return;
+		if(!Input.GetMouseButton(0))return;
 
 		Vector2 mouseInWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		if(clickedTarget != null){
@@ -79,23 +89,28 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 			clickedTarget = null;
 			return;
 		}
-		
 		RaycastHit2D hitInfo;
 		hitInfo = Physics2D.Raycast(
 			mouseInWorld, 
 			Camera.main.gameObject.transform.forward, 
-			1.0f
+			1.0f,
+			LayerMask.NameToLayer("Atom")
 			);
 		//if does not hit anything
-		if(hitInfo.collider == null)return;
-		GameObject hit = hitInfo.collider.gameObject;
-		AtomGuess2D atom = hit.GetComponent<AtomGuess2D>();
-		//if hit is not an atom
-		if(atom == null)return;
-		//update clickedTarget
-		if(atom is AtomGuessTarget2D){
-			clickedTarget = (AtomGuessTarget2D)atom;
+		if(hitInfo.collider == null){
+			Debug.Log("no hit");
 			return;
 		}
+		GameObject hit = hitInfo.collider.gameObject;
+		Debug.Log(hit.name);
+		AtomGuessTarget2D atom = hit.GetComponent<AtomGuessTarget2D>();
+		//if hit is not an atom
+		if(atom == null){
+			Debug.Log("atom is null");
+			return;
+		}
+		clickedTarget = (AtomGuessTarget2D)atom;
+		return;
+		
 	}
 }
