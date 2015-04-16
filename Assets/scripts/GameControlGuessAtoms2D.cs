@@ -74,6 +74,8 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 					atom.renderedAtom.transform.position = atom.transform.position;
 					atom.renderedAtom.GetComponent<Renderer>().enabled = true;
 					atom.renderedPrevious.GetComponent<Renderer>().enabled = true;
+					//draw arrow
+					atom.ConnectArrow();
 				}
 				foreach(GameObject g in AtomPhysicsGuessGame2D.self.Ions){
 					AtomGuess2D atom = g.GetComponent<AtomGuess2D>();
@@ -103,8 +105,6 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		if(clickedTarget != null){
 			//draw transparent atom
 			ShowPredictedAtom(mouseInWorld);
-			//draw arrow
-			CreateConnectingArrow(mouseInWorld);
 			clickedTarget = null;
 			return;
 		}
