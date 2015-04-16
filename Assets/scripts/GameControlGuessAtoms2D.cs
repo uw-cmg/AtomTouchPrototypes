@@ -19,6 +19,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		UpdatingAtomPositions
 	};
 	void Awake(){
+		Time.timeScale = 0;
 		self = this;
 		allowedGuessTime = 10.0f;
 		maxWaitingWhenUpdate = 3.0f;
@@ -30,6 +31,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		remainingGuessTime = allowedGuessTime;
 		remainingWaitingTime = maxWaitingWhenUpdate;
 		clickedTarget = null;
+		Time.timeScale = 1;
 	}
 	
 	// Update is called once per frame
@@ -38,7 +40,8 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 			//renderedAtoms <- ghostAtoms
 			foreach(AtomGuessTarget2D atom in atomsToGuess){
 				//show actual atom new position
-				atom.GetComponent<Renderer>().enabled = true;
+				atom.renderedAtom.transform.position = atom.transform.position;
+				atom.renderedAtom.GetComponent<Renderer>().enabled = true;
 			}
 			//calculate how accurate the guess is : distance 
 			//bewtween new atom position and rendered atom position
@@ -47,7 +50,6 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 
 			//hide rendered atom
 			foreach(AtomGuessTarget2D atom in atomsToGuess){
-				atom.renderedAtom.GetComponent<Renderer>().enabled = false;
 				atom.predictedAtom.GetComponent<Renderer>().enabled = false;
 			}
 			if(remainingWaitingTime <= 0){
@@ -78,9 +80,11 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 	}
 	//raycast to see if mouse clicked on a target
 	void CheckMouseClick(){
-		if(!Input.GetMouseButton(0))return;
-
-		Vector2 mouseInWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		if(!Input.GetMouseButtonDown(0))return;
+		Vector3 mousePos = Input.mousePosition;
+		mousePos.z = 9.0f;
+		Vector3 mouseInWorld = Camera.main.ScreenToWorldPoint(mousePos);
+		
 		if(clickedTarget != null){
 			//draw transparent atom
 			ShowPredictedAtom(mouseInWorld);
@@ -90,12 +94,18 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 			return;
 		}
 		RaycastHit2D hitInfo;
+		Vector3 dir = Camera.main.transform.forward;
+		dir.Normalize();
+		//Debug.Log(dir);
+		Debug.Log(mouseInWorld);
 		hitInfo = Physics2D.Raycast(
 			mouseInWorld, 
-			Camera.main.gameObject.transform.forward, 
-			1.0f,
-			LayerMask.NameToLayer("Atom")
+			new Vector3(0,0,1),
+			19.0f,
+			LayerMask.GetMask("AtomRendered")
 			);
+		
+
 		//if does not hit anything
 		if(hitInfo.collider == null){
 			Debug.Log("no hit");
@@ -103,7 +113,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		}
 		GameObject hit = hitInfo.collider.gameObject;
 		Debug.Log(hit.name);
-		AtomGuessTarget2D atom = hit.GetComponent<AtomGuessTarget2D>();
+		AtomGuessTarget2D atom = hit.transform.parent.gameObject.GetComponent<AtomGuessTarget2D>();
 		//if hit is not an atom
 		if(atom == null){
 			Debug.Log("atom is null");

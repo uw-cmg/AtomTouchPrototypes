@@ -16,7 +16,7 @@ public class AtomPhysicsGuessGame2D : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		Time.timeScale = 1;
+		
 
 	}
 	
