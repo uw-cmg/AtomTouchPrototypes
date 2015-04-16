@@ -52,6 +52,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 					atom.predictedAtom.GetComponent<Renderer>().enabled = false;
 					atom.renderedPrevious.GetComponent<Renderer>().enabled = true;
 				}
+
 			}else{
 				remainingWaitingTime -= Time.deltaTime;
 			}
@@ -64,17 +65,22 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 				state = (int)State.UpdatingAtomPositions;
 				remainingGuessTime = allowedGuessTime;
 				//renderedAtoms <- ghostAtoms
-			foreach(AtomGuessTarget2D atom in atomsToGuess){
-				//show actual atom new position
-				//current position becomes last position
-				Vector2 oldPos = atom.renderedAtom.transform.position;
-				atom.renderedPrevious.transform.position = oldPos;
-				//ghost atom position becomes current position
-				atom.renderedAtom.transform.position = atom.transform.position;
-				atom.renderedAtom.GetComponent<Renderer>().enabled = true;
-				atom.renderedPrevious.GetComponent<Renderer>().enabled = true;
-			}
-			
+				foreach(AtomGuessTarget2D atom in atomsToGuess){
+					//show actual atom new position
+					//current position becomes last position
+					Vector2 oldPos = atom.renderedAtom.transform.position;
+					atom.renderedPrevious.transform.position = oldPos;
+					//ghost atom position becomes current position
+					atom.renderedAtom.transform.position = atom.transform.position;
+					atom.renderedAtom.GetComponent<Renderer>().enabled = true;
+					atom.renderedPrevious.GetComponent<Renderer>().enabled = true;
+				}
+				foreach(GameObject g in AtomPhysicsGuessGame2D.self.Ions){
+					AtomGuess2D atom = g.GetComponent<AtomGuess2D>();
+					if(atom is AtomGuessTarget2D)continue;
+					atom.renderedObj.transform.position = g.transform.position;	
+				}
+
 			}else{
 				remainingGuessTime -= Time.deltaTime;
 			}
