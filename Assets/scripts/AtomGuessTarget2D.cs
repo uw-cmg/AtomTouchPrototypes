@@ -31,6 +31,7 @@ public class AtomGuessTarget2D : AtomGuess2D {
 
 		Vector2 oldToCurrent = renderedAtom.transform.position
 			-renderedPrevious.transform.position;
+
 		float dist = oldToCurrent.magnitude;
 		//scale body
 		arrowBody.transform.localScale = new Vector3(
@@ -39,8 +40,8 @@ public class AtomGuessTarget2D : AtomGuess2D {
 			1f);
 		
 		//translate both
-		arrow.transform.position = renderedPrevious.transform.position 
-			+ Vector3.MoveTowards(renderedPrevious.transform.position,
+		arrow.transform.position = 
+			Vector3.MoveTowards(renderedPrevious.transform.position,
 			renderedAtom.transform.position, cc.radius/dist);
 		
 		//arrow head
