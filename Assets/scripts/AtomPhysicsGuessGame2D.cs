@@ -40,11 +40,12 @@ public class AtomPhysicsGuessGame2D : MonoBehaviour {
 			bool withinViewport = atom.WithinViewport();
 			if(!withinViewport){
 				//Destroy(atom.gameObject);
-				Ions.Remove(atom.gameObject);
+				//Ions.Remove(atom.gameObject);
 				
-				Destroy(atom.gameObject);
+				//Destroy(atom.gameObject);
 			}
 			*/
+			
 		}
 		AtomGuess2D curr;
 		AtomGuess2D other;
