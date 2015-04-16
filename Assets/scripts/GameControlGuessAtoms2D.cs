@@ -37,24 +37,21 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(state == (int)State.UpdatingAtomPositions){
-			//renderedAtoms <- ghostAtoms
-			foreach(AtomGuessTarget2D atom in atomsToGuess){
-				//show actual atom new position
-				atom.renderedAtom.transform.position = atom.transform.position;
-				atom.renderedAtom.GetComponent<Renderer>().enabled = true;
-			}
+			
 			//calculate how accurate the guess is : distance 
 			//bewtween new atom position and rendered atom position
 
 			//wait for 3 seconds
 
-			//hide rendered atom
-			foreach(AtomGuessTarget2D atom in atomsToGuess){
-				atom.predictedAtom.GetComponent<Renderer>().enabled = false;
-			}
+			
 			if(remainingWaitingTime <= 0){
 				remainingWaitingTime = maxWaitingWhenUpdate;
 				state = (int)State.PlayerGuessing;
+				//hide predicted atom
+				foreach(AtomGuessTarget2D atom in atomsToGuess){
+					atom.predictedAtom.GetComponent<Renderer>().enabled = false;
+					atom.renderedPrevious.GetComponent<Renderer>().enabled = true;
+				}
 			}else{
 				remainingWaitingTime -= Time.deltaTime;
 			}
@@ -66,6 +63,18 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 			if(remainingGuessTime <= 0){
 				state = (int)State.UpdatingAtomPositions;
 				remainingGuessTime = allowedGuessTime;
+				//renderedAtoms <- ghostAtoms
+			foreach(AtomGuessTarget2D atom in atomsToGuess){
+				//show actual atom new position
+				//current position becomes last position
+				Vector2 oldPos = atom.renderedAtom.transform.position;
+				atom.renderedPrevious.transform.position = oldPos;
+				//ghost atom position becomes current position
+				atom.renderedAtom.transform.position = atom.transform.position;
+				atom.renderedAtom.GetComponent<Renderer>().enabled = true;
+				atom.renderedPrevious.GetComponent<Renderer>().enabled = true;
+			}
+			
 			}else{
 				remainingGuessTime -= Time.deltaTime;
 			}
@@ -101,7 +110,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		hitInfo = Physics2D.Raycast(
 			mouseInWorld, 
 			new Vector3(0,0,1),
-			19.0f,
+			10.0f,
 			LayerMask.GetMask("AtomRendered")
 			);
 		
