@@ -7,6 +7,7 @@ public class AtomGuessTarget2D : AtomGuess2D {
 	public GameObject predictedAtom;
 	public GameObject renderedAtom;
 	public GameObject renderedPrevious;
+	public GameObject arrow;
 	// Use this for initialization
 	void Start () {
 		GetComponent<Renderer>().enabled = false;
