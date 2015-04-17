@@ -124,6 +124,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		if(clickedTarget != null){
 			//draw transparent atom
 			ShowPredictedAtom(mouseInWorld);
+			clickedTarget.GetComponent<AudioSource>().Play();
 			clickedTarget = null;
 			return;
 		}
