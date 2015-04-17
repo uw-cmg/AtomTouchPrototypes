@@ -27,6 +27,7 @@ public class AtomPhysicsGuessGame2D : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if(!GameControlGuessAtoms2D.started )return;
 		for(int i=0; i < Ions.Count;i++){
 			if(Ions[i] == null){
 				Ions.Remove(Ions[i]);
@@ -83,6 +84,10 @@ public class AtomPhysicsGuessGame2D : MonoBehaviour {
 			}
 			if(currRb.gameObject.tag == "Atom"){
 				currRb.AddForce(curr.totalForce);
+				Component[] rbs = currRb.GetComponentsInChildren<Rigidbody2D>();
+				foreach(Rigidbody2D r in rbs){
+					r.velocity = Vector2.zero;
+				}
 			}
 
 				

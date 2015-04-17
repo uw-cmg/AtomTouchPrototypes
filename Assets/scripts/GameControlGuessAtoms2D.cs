@@ -9,19 +9,20 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 	public float remainingGuessTime;
 	public float maxWaitingWhenUpdate;
 	public float remainingWaitingTime;
-
+	public static bool started = false;
 	public AtomGuessTarget2D clickedTarget;
 	//assigned in inspector
 	public List<AtomGuessTarget2D> atomsToGuess;
 
 	public enum State{
+
 		PlayerGuessing,
 		UpdatingAtomPositions
 	};
 	void Awake(){
 		Time.timeScale = 0;
 		self = this;
-		allowedGuessTime = 10.0f;
+		allowedGuessTime = 5.0f;
 		maxWaitingWhenUpdate = 3.0f;
 	}
 	// Use this for initialization
@@ -32,6 +33,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		remainingWaitingTime = maxWaitingWhenUpdate;
 		clickedTarget = null;
 		Time.timeScale = 1;
+		Time.fixedDeltaTime = 0.02f;
 	}
 	
 	// Update is called once per frame
@@ -87,13 +89,11 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 				remainingGuessTime -= Time.deltaTime;
 			}
 		}
+		started = true;
 	}
 	void ShowPredictedAtom(Vector2 pos){
 		clickedTarget.predictedAtom.transform.position = pos;
 		clickedTarget.predictedAtom.GetComponent<Renderer>().enabled = true;
-	}
-	void CreateConnectingArrow(Vector2 pos){
-
 	}
 	//raycast to see if mouse clicked on a target
 	void CheckMouseClick(){
@@ -128,7 +128,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		}
 		GameObject hit = hitInfo.collider.gameObject;
 		Debug.Log(hit.name);
-		AtomGuessTarget2D atom = hit.transform.parent.gameObject.GetComponent<AtomGuessTarget2D>();
+		AtomGuessTarget2D atom = hit.GetComponent<RenderedAtomGuess2D>().guessTarget;
 		//if hit is not an atom
 		if(atom == null){
 			Debug.Log("atom is null");

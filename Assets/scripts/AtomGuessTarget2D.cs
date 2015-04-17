@@ -28,10 +28,14 @@ public class AtomGuessTarget2D : AtomGuess2D {
 	}
 	//connect old position and current position with an arrow
 	public void ConnectArrow(){
-
-		Vector2 oldToCurrent = renderedAtom.transform.position
-			-renderedPrevious.transform.position;
-
+		Vector2 renderedAtomPos = renderedAtom.transform.position;
+		Vector2 oldAtomPos = renderedPrevious.transform.position;
+		
+		Vector2 oldToCurrent = renderedAtomPos-oldAtomPos;
+		if(oldToCurrent.magnitude < 0.01f){
+			ShowArrow(false);
+			return;
+		}
 		float dist = oldToCurrent.magnitude;
 		//scale body
 		arrowBody.transform.localScale = new Vector3(
@@ -41,15 +45,17 @@ public class AtomGuessTarget2D : AtomGuess2D {
 		
 		//translate both
 		arrow.transform.position = 
-			Vector3.MoveTowards(renderedPrevious.transform.position,
-			renderedAtom.transform.position, cc.radius/dist);
+			Vector3.MoveTowards(oldAtomPos,
+			renderedAtomPos , cc.radius/dist);
 		
 		//arrow head
 		//translate head
-
-		arrowHead.transform.localPosition 
-			= Vector2.right * 
-			arrowBody.transform.localScale.x;
+		if(arrowBody.transform.localScale.x > 0){
+			arrowHead.transform.localPosition 
+				= Vector2.right * 
+				arrowBody.transform.localScale.x;
+		}
+		
 		//no need to scale since arrow head's and body's y's always matchs
 
 		//rotate both
