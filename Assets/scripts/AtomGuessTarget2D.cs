@@ -46,7 +46,7 @@ public class AtomGuessTarget2D : AtomGuess2D {
 		//translate both
 		arrow.transform.position = 
 			Vector3.MoveTowards(oldAtomPos,
-			renderedAtomPos , cc.radius/dist);
+			renderedAtomPos, cc.radius/dist);
 		
 		//arrow head
 		//translate head

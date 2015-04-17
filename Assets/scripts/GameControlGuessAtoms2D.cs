@@ -33,7 +33,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		remainingWaitingTime = maxWaitingWhenUpdate;
 		clickedTarget = null;
 		Time.timeScale = 1;
-		Time.fixedDeltaTime = 0.02f;
+		Time.fixedDeltaTime = 0.01f;
 	}
 	
 	// Update is called once per frame
