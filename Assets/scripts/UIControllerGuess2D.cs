@@ -6,6 +6,7 @@ public class UIControllerGuess2D : MonoBehaviour {
 	public static UIControllerGuess2D self;
 	public Text timerText; 
 	public Text remainingWaitTimeText;
+	public Text scoreText;
 	public GameObject timerPanel;
 	public GameObject waitTimePanel;
 
@@ -19,6 +20,10 @@ public class UIControllerGuess2D : MonoBehaviour {
 			timerPanel.SetActive(true);
 			waitTimePanel.SetActive(false);
 		}
+	}
+	public void UpdateScore(){
+		float score = GameControlGuessAtoms2D.self.score;
+		scoreText.text = score.ToString("0.0");
 	}
 	public void UpdateWaitTime(){
 		float t = Mathf.Max(0.0f, GameControlGuessAtoms2D.self.remainingWaitingTime);

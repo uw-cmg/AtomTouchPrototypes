@@ -9,6 +9,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 	public float remainingGuessTime;
 	public float maxWaitingWhenUpdate;
 	public float remainingWaitingTime;
+	public float score;
 	public static bool started = false;
 	public AtomGuessTarget2D clickedTarget;
 	//assigned in inspector
@@ -33,10 +34,20 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		remainingGuessTime = allowedGuessTime;
 		remainingWaitingTime = maxWaitingWhenUpdate;
 		clickedTarget = null;
+		score = 0.0f;
 		Time.timeScale = 1;
 		Time.fixedDeltaTime = 0.005f;
 	}
-	
+	public void CalcScore(){
+		foreach(AtomGuessTarget2D atom in atomsToGuess){
+			float dist = Vector3.Distance(
+				atom.renderedAtom.transform.position,
+				atom.predictedAtom.transform.position
+			);
+			dist = Mathf.Max(dist, 0.001f);
+			score += 1f/dist;
+		}
+	}
 	// Update is called once per frame
 	void Update () {
 		if(state == (int)State.UpdatingAtomPositions){
@@ -51,10 +62,11 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 				remainingWaitingTime = maxWaitingWhenUpdate;
 				state = (int)State.PlayerGuessing;
 				UIControllerGuess2D.self.ToggleTimerPanels((int)State.PlayerGuessing);
-				//hide predicted atom
+				//hide predicted atom. previous positions, and arrows
 				foreach(AtomGuessTarget2D atom in atomsToGuess){
 					atom.predictedAtom.GetComponent<Renderer>().enabled = false;
-					atom.renderedPrevious.GetComponent<Renderer>().enabled = true;
+					atom.renderedPrevious.GetComponent<Renderer>().enabled = false;
+					atom.arrow.SetActive(false);
 				}
 
 			}else{
@@ -81,6 +93,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 					atom.renderedAtom.transform.position = atom.transform.position;
 					atom.renderedAtom.GetComponent<Renderer>().enabled = true;
 					atom.renderedPrevious.GetComponent<Renderer>().enabled = true;
+					atom.arrow.SetActive(true);
 					//draw arrow
 					atom.ConnectArrow();
 				}
@@ -89,7 +102,8 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 					if(atom is AtomGuessTarget2D)continue;
 					atom.renderedObj.transform.position = g.transform.position;	
 				}
-
+				CalcScore();
+				UIControllerGuess2D.self.UpdateScore();
 			}else{
 				remainingGuessTime -= Time.deltaTime;
 			}
