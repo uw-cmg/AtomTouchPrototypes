@@ -24,7 +24,7 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		Time.timeScale = 0;
 		self = this;
 		allowedGuessTime = 5.0f;
-		maxWaitingWhenUpdate = 3.0f;
+		maxWaitingWhenUpdate = 2.0f;
 	}
 	// Use this for initialization
 	void Start () {
@@ -36,7 +36,12 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		clickedTarget = null;
 		score = 0.0f;
 		Time.timeScale = 1;
-		Time.fixedDeltaTime = 0.005f;
+		Time.fixedDeltaTime = 0.002f;
+
+	}
+	void OnEnable(){
+		Debug.Log("visible");
+		Camera.main.GetComponent<AudioSource>().Play();
 	}
 	public void CalcScore(){
 		foreach(AtomGuessTarget2D atom in atomsToGuess){
