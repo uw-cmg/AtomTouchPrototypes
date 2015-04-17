@@ -29,11 +29,12 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 	void Start () {
 		//init
 		state = (int)State.PlayerGuessing;
+		UIControllerGuess2D.self.ToggleTimerPanels((int)State.PlayerGuessing);
 		remainingGuessTime = allowedGuessTime;
 		remainingWaitingTime = maxWaitingWhenUpdate;
 		clickedTarget = null;
 		Time.timeScale = 1;
-		Time.fixedDeltaTime = 0.01f;
+		Time.fixedDeltaTime = 0.005f;
 	}
 	
 	// Update is called once per frame
@@ -45,10 +46,11 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 
 			//wait for 3 seconds
 
-			
+			UIControllerGuess2D.self.UpdateWaitTime();
 			if(remainingWaitingTime <= 0){
 				remainingWaitingTime = maxWaitingWhenUpdate;
 				state = (int)State.PlayerGuessing;
+				UIControllerGuess2D.self.ToggleTimerPanels((int)State.PlayerGuessing);
 				//hide predicted atom
 				foreach(AtomGuessTarget2D atom in atomsToGuess){
 					atom.predictedAtom.GetComponent<Renderer>().enabled = false;
@@ -62,9 +64,12 @@ public class GameControlGuessAtoms2D : MonoBehaviour {
 		}else if(state == (int)State.PlayerGuessing){
 			//on click
 			CheckMouseClick();
+			UIControllerGuess2D.self.UpdateTimer();
 			//update remaining time
 			if(remainingGuessTime <= 0){
 				state = (int)State.UpdatingAtomPositions;
+				UIControllerGuess2D.self.ToggleTimerPanels((int)State.UpdatingAtomPositions);
+
 				remainingGuessTime = allowedGuessTime;
 				//renderedAtoms <- ghostAtoms
 				foreach(AtomGuessTarget2D atom in atomsToGuess){
