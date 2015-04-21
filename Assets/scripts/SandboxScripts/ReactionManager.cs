@@ -15,7 +15,10 @@ public class ReactionManager : MonoBehaviour {
 		}
 		return null;
 	}
-	public Reaction CreateReactionWithIngredients(ref List<Compound> ingredients, ref List<Condition> conds){
+	public Reaction CreateReactionWithIngredients(
+		ref List<Compound> ingredients, 
+		ref List<Condition> conds){
+		
 		List<Compound> sortedIngredients = ingredients.OrderBy(o=>o.name).ToList();
 		List<Condition> sortedConds = conds.OrderBy(o=>o.type).ToList();
 		Reaction r = Instantiate(prefab) as Reaction;
