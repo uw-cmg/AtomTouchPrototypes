@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Compound : MonoBehaviour {
 	public string name;
-	public float amount;
+	public int amount;
 	// Use this for initialization
 	void Start () {
 	

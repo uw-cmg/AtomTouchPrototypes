@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Conditon : MonoBehaviour {
+public class Condition : MonoBehaviour {
 	public enum ConditionType{
 		Heat,
 		Catalyst
 	};
+	public int type;
 	// Use this for initialization
 	void Start () {
 	
