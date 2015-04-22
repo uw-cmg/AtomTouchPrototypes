@@ -10,7 +10,7 @@ public class Reaction : MonoBehaviour {
 	public string Hash(){
 		string hash = "";
 		foreach(Compound c in ingredients){
-			hash += c.amount + c.name + "+";
+			hash += c.name + "+";
 		}
 		hash += "-";
 		foreach(Condition c in conditions){

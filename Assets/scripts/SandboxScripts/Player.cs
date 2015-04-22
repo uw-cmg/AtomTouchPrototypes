@@ -28,6 +28,6 @@ public class Player : MonoBehaviour {
 	}
 
 	void HandleAddingFacility(GameObject raycastObject){
-
+		
 	}
 }
