@@ -57,4 +57,21 @@ public class UIControlSandbox : MonoBehaviour {
 			Debug.Log(pair.Key + ": " + pair.Value.amount);
 		}
 	}
+	public void OnClickAddCondition(Condition cond){
+		if(Player.self.selectedReactor == null){
+			Debug.Log("No reactor selected");
+			return;
+		}
+		Reactor reactor = Player.self.selectedReactor.GetComponent<Reactor>();
+		foreach(Condition c in reactor.conditions){
+			if(c.type == cond.type){
+				return;
+			}
+		}
+		GameObject condition = Instantiate(cond.gameObject) as GameObject;
+		condition.transform.parent = Player.self.selectedReactor.transform;
+		condition.transform.localPosition = condition.GetComponent<Condition>().relativePosToReactor;
+		reactor.conditions.Add(cond);
+
+	}
 }

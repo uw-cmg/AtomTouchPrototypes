@@ -7,7 +7,11 @@ public class Condition : MonoBehaviour {
 		Catalyst
 	};
 	public int type;
+	public Vector2 relativePosToReactor;
 	// Use this for initialization
+	void Awake(){
+		relativePosToReactor = new Vector2(-0.05f, -1f);
+	}
 	void Start () {
 	
 	}
