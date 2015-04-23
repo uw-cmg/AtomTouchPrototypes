@@ -13,8 +13,9 @@ public class ReactionManager : MonoBehaviour {
 		reactions = new Dictionary<string, Reaction>();
 		//hash
 		foreach(GameObject g in reactionList){
-			Debug.Log(g.GetComponent<Reaction>().Hash());
-			reactions.Add(g.GetComponent<Reaction>().Hash(), g.GetComponent<Reaction>());
+			Reaction r = g.GetComponent<Reaction>();
+			Debug.Log(r.Hash());
+			reactions.Add(r.Hash(), r);
 		}
 		
 	}
