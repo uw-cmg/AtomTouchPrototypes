@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class UIControlSandbox : MonoBehaviour {
-
+	public GameObject[] ingredientsInputField;
+	public GameObject emptyCompoundPrefab;
 	// Use this for initialization
 	void Start () {
-	
+		ingredientsInputField = GameObject.FindGameObjectsWithTag("IngredientsInputField");
+
 	}
 	
 	// Update is called once per frame
@@ -26,6 +29,32 @@ public class UIControlSandbox : MonoBehaviour {
 			amountText.text = inputField.GetComponent<InputFieldScript>().amountStored.ToString("0.0");
 			Text btnText = c.gameObject.transform.Find("Text").GetComponent<Text>();
 			btnText.text = c.name + "   (" + c.amount.ToString("0.0") + ")";
+		}
+	}
+	public void OnClickAddIngredients(){
+		if(Player.self.selectedReactor == null){
+			Debug.Log("NO reactor selected");
+			return;
+		}
+		Debug.Log("adding ingredients");
+		Reactor reactor = Player.self.selectedReactor.GetComponent<Reactor>();
+		foreach(GameObject g in ingredientsInputField){
+			InputFieldScript ifs = g.GetComponent<InputFieldScript>();
+			if(reactor.compounds.ContainsKey(ifs.name)){
+				Compound c = reactor.compounds[ifs.name];
+				c.amount += ifs.amountStored;
+				reactor.compounds.Add(ifs.name, c);
+			}else{
+				//create compound
+				GameObject newCompound = Instantiate(emptyCompoundPrefab) as GameObject;
+				Compound c = newCompound.GetComponent<Compound>();
+				c.name = ifs.name;
+				c.amount = ifs.amountStored;
+				reactor.compounds.Add(c.name, c);
+			}
+		}
+		foreach(KeyValuePair<string, Compound> pair in reactor.compounds){
+			Debug.Log(pair.Key + ": " + pair.Value.amount);
 		}
 	}
 }
