@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class UIControlSandbox : MonoBehaviour {
 	public GameObject[] ingredientsInputField;
 	public GameObject emptyCompoundPrefab;
+	public GameObject emptyReactionPrefab;
 	// Use this for initialization
 	void Start () {
 		ingredientsInputField = GameObject.FindGameObjectsWithTag("IngredientsInputField");
@@ -73,5 +74,12 @@ public class UIControlSandbox : MonoBehaviour {
 		condition.transform.localPosition = condition.GetComponent<Condition>().relativePosToReactor;
 		reactor.conditions.Add(cond);
 
+	}
+	public void OnClickStartReaction(Reactor reactor){
+		Reaction r = reactor.CreateReactionWithIngredients(emptyReactionPrefab);
+		Debug.Log(r.Hash());
+		if(ReactionManager.self.reactions.ContainsKey(r.Hash())){
+			Debug.Log("is valid reaction");
+		}
 	}
 }
