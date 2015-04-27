@@ -80,6 +80,9 @@ public class UIControlSandbox : MonoBehaviour {
 		Debug.Log(r.Hash());
 		if(ReactionManager.self.reactions.ContainsKey(r.Hash())){
 			Debug.Log("is valid reaction");
+			//must pass the reaction in the reactionmanager dictionary
+			//because created reaction does not have products filled
+			reactor.StartReaction(ReactionManager.self.reactions[r.Hash()]);
 		}
 	}
 }

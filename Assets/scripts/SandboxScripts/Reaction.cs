@@ -6,7 +6,8 @@ public class Reaction : MonoBehaviour {
 	public List<Compound> ingredients; //must be ordered
 	public List<Condition> conditions; //must be ordered
 	public List<Compound> products;
-
+	public float rate; //how much ingredients consumed every second
+	
 	public string Hash(){
 		string hash = "";
 		foreach(Compound c in ingredients){
