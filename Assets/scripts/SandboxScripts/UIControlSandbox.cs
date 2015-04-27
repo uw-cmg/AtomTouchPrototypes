@@ -44,9 +44,12 @@ public class UIControlSandbox : MonoBehaviour {
 			if(reactor.compounds.ContainsKey(ifs.name)){
 				Compound c = reactor.compounds[ifs.name];
 				c.amount += ifs.amountStored;
-				reactor.compounds.Add(ifs.name, c);
+				//reactor.compounds.Add(ifs.name, c);
 			}else{
 				//create compound
+				if(ifs.amountStored <= 0.001f){
+					continue;
+				}
 				GameObject newCompound = Instantiate(emptyCompoundPrefab) as GameObject;
 				Compound c = newCompound.GetComponent<Compound>();
 				c.name = ifs.name;
