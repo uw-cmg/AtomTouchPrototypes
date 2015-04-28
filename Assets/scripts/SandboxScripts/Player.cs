@@ -45,10 +45,12 @@ public class Player : MonoBehaviour {
 				bool mouseClickUI = EventSystem.current.IsPointerOverGameObject();
 
 				if(hit != null && hit.collider != null){
-				
+					if(selectedReactor != null){
+						selectedReactor.GetComponent<SpriteRenderer>().color = Color.white;
+					}
 					selectedReactor = hit.collider.gameObject;
 					//highlight reactor
-					hit.collider.gameObject.GetComponent<SpriteRenderer>().color
+					selectedReactor.GetComponent<SpriteRenderer>().color
 						= new Color(193f/255f, 88f/255f, 1.0f, 1.0f);
 					
 					

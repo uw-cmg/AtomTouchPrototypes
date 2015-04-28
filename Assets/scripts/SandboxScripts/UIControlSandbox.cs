@@ -60,6 +60,10 @@ public class UIControlSandbox : MonoBehaviour {
 		foreach(KeyValuePair<string, Compound> pair in reactor.compounds){
 			Debug.Log(pair.Key + ": " + pair.Value.amount);
 		}
+		foreach(GameObject g in ingredientsInputField){
+			InputFieldScript ifs = g.GetComponent<InputFieldScript>();
+			ifs.amountStored = 0.0f;
+		}
 	}
 	public void OnClickAddCondition(Condition cond){
 		if(Player.self.selectedReactor == null){
@@ -79,6 +83,7 @@ public class UIControlSandbox : MonoBehaviour {
 
 	}
 	public void OnClickStartReaction(Reactor reactor){
+		Debug.Log("clicked start reaction");
 		Reaction r = reactor.CreateReactionWithIngredients(emptyReactionPrefab);
 		Debug.Log(r.Hash());
 		if(ReactionManager.self.reactions.ContainsKey(r.Hash())){
