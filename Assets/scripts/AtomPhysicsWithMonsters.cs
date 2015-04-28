@@ -5,16 +5,16 @@ using System.Collections.Generic;
 public class AtomPhysicsWithMonsters : MonoBehaviour {
 	public static AtomPhysicsWithMonsters self;
 	public List<GameObject> Ions;
-	public GameObject[] anchorAtoms;
+	public GameObject[] monsterAnchorAtoms;
 	void Awake(){
 		self = this;
 		Application.targetFrameRate = 150;
 		GameObject[] loadedAtoms = GameObject.FindGameObjectsWithTag("Atom");
-		anchorAtoms = GameObject.FindGameObjectsWithTag("AnchorAtom");
+		monsterAnchorAtoms = GameObject.FindGameObjectsWithTag("MonsterAnchor");
 		foreach(GameObject g in loadedAtoms){
 			Ions.Add(g);
 		}
-		foreach(GameObject g in anchorAtoms){
+		foreach(GameObject g in monsterAnchorAtoms){
 			Ions.Add(g);
 		}
 	}
@@ -88,7 +88,7 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 			}
 			//currRb.velocity = curr.vel;
 			currRb.velocity = Vector3.zero;
-			if(currRb.gameObject.tag == "AnchorAtom"){
+			if(currRb.gameObject.tag == "AnchorAtom" || currRb.gameObject.tag == "MonsterAnchor"){
 				
 			}else{
 

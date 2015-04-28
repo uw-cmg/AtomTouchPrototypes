@@ -24,12 +24,22 @@ public class MonsterAtomManager : MonoBehaviour {
 		foreach(MonsterAtomConnection mac in atomConnections){
 			Atom2D maStart = mac.start;
 			Atom2D maEnd = mac.end;
+			//clear visited flags
+			foreach(MonsterAtom2D ma2D in monsterAnchors){
+				ma2D.visited = false;
+			}
+			foreach(GameObject atom in AtomPhysicsWithMonsters.self.Ions){
+				atom.GetComponent<Atom2D>().visited = false;
+			}
 			//DFS
 			bool areConnected = MonstersAreConnected(ref maStart, ref maEnd);
 			if(areConnected){
 				Debug.DrawLine(maStart.transform.position, maEnd.transform.position,
 					Color.white, 2.0f);
+				Debug.Log(maStart.gameObject.name + " and " + maEnd.gameObject.name + " are connected!");
 			}
+			
+
 		}
 	}
 	//DFS

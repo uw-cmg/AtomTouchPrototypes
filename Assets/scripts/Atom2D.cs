@@ -29,12 +29,14 @@ public class Atom2D : MonoBehaviour {
 	}
 	void OnCollisionEnter2D(Collision2D collision){
 		if(Application.loadedLevelName != "ConnectMonsters")return;
-		if(collision.gameObject.tag != "Atom")return;
+		if(collision.gameObject.tag != "Atom"
+			&& collision.gameObject.tag != "MonsterAnchor")return;
 		neighbours.Add(collision.gameObject.GetComponent<Atom2D>());
 	}
 	void OnCollisionExit2D(Collision2D collision){
 		if(Application.loadedLevelName != "ConnectMonsters")return;
-		if(collision.gameObject.tag != "Atom")return;
+		if(collision.gameObject.tag != "Atom"
+			&& collision.gameObject.tag != "MonsterAnchor")return;
 		neighbours.Remove(collision.gameObject.GetComponent<Atom2D>());
 	}
 	//gives a random vel
