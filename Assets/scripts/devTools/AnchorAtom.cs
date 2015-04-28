@@ -12,6 +12,7 @@ public class AnchorAtom : MonoBehaviour {
 	void Update () {
 		
 	}
+	
 	void OnMouseDown(){
 		if(lastClickTime <= 0){
 			lastClickTime = Time.time;
@@ -33,8 +34,6 @@ public class AnchorAtom : MonoBehaviour {
 			gameObject.tag = "Atom";
 			//AtomPhysics2D.self.Ions.Add(gameObject);
 			GetComponent<Rigidbody2D>().isKinematic = false;
-		}
-		
-			
+		}	
 	}
 }

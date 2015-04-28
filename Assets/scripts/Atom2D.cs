@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Atom2D : MonoBehaviour {
 	public static Atom2D self;
@@ -8,9 +9,15 @@ public class Atom2D : MonoBehaviour {
 	public Button btn; //corresponding add atom btn
 	public Vector2 totalForce = Vector2.zero;
 	public CircleCollider2D cc;
+	public bool visited;
+	public List<Atom2D> neighbours;
 	// Use this for initialization
 	void Awake(){
 		self = this;
+		visited = false;
+		if(Application.loadedLevelName == "ConnectMonsters"){
+			neighbours = new List<Atom2D>();
+		}
 	}
 	void Start () {
 		
@@ -19,6 +26,16 @@ public class Atom2D : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+	void OnCollisionEnter2D(Collision2D collision){
+		if(Application.loadedLevelName != "ConnectMonsters")return;
+		if(collision.gameObject.tag != "Atom")return;
+		neighbours.Add(collision.gameObject.GetComponent<Atom2D>());
+	}
+	void OnCollisionExit2D(Collision2D collision){
+		if(Application.loadedLevelName != "ConnectMonsters")return;
+		if(collision.gameObject.tag != "Atom")return;
+		neighbours.Remove(collision.gameObject.GetComponent<Atom2D>());
 	}
 	//gives a random vel
 	public void Kick(){
