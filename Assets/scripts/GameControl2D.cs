@@ -15,7 +15,7 @@ public class GameControl2D : MonoBehaviour {
 	};
 	void Awake(){
 		self = this;
-		timeAllowed = 60.0f;
+		timeAllowed = 6000.0f;
 	}
 	// Use this for initialization
 	void Start () {
@@ -94,7 +94,13 @@ public class GameControl2D : MonoBehaviour {
 		//add to NaCl list
 		Atom2D atom = atomToAdd.GetComponent<Atom2D>();
 		atom.Kick();
-		AtomPhysics2D.self.Ions.Add(atomToAdd);
+		//for diff prototypes
+		if(AtomPhysics2D.self != null){
+			AtomPhysics2D.self.Ions.Add(atomToAdd);
+		}else if (AtomPhysicsWithMonsters.self != null){
+			AtomPhysicsWithMonsters.self.Ions.Add(atomToAdd);
+		}
+		
 		UIControl.self.EnableAtomBtns();
 	}
 	public void CreateAtom(GameObject prefab){

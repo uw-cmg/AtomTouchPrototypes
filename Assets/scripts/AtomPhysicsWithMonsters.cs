@@ -1,17 +1,20 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class AtomPhysics2D : MonoBehaviour {
-	public static AtomPhysics2D self;
+public class AtomPhysicsWithMonsters : MonoBehaviour {
+	public static AtomPhysicsWithMonsters self;
 	public List<GameObject> Ions;
-	public Atom2D targetAtom;
-	
+	public GameObject[] anchorAtoms;
 	void Awake(){
 		self = this;
 		Application.targetFrameRate = 150;
 		GameObject[] loadedAtoms = GameObject.FindGameObjectsWithTag("Atom");
+		anchorAtoms = GameObject.FindGameObjectsWithTag("AnchorAtom");
 		foreach(GameObject g in loadedAtoms){
+			Ions.Add(g);
+		}
+		foreach(GameObject g in anchorAtoms){
 			Ions.Add(g);
 		}
 	}
@@ -45,9 +48,7 @@ public class AtomPhysics2D : MonoBehaviour {
 			if(!withinViewport){
 				//Destroy(atom.gameObject);
 				Ions.Remove(atom.gameObject);
-				if(atom == targetAtom){
-					UIControl.self.EndGame(false);
-				}
+				
 				Destroy(atom.gameObject);
 			}
 		}
@@ -87,8 +88,8 @@ public class AtomPhysics2D : MonoBehaviour {
 			}
 			//currRb.velocity = curr.vel;
 			currRb.velocity = Vector3.zero;
-			if(currRb.gameObject.GetComponent<Atom2D>().GetType() == typeof (MonsterAtom2D)){
-			
+			if(currRb.gameObject.tag == "AnchorAtom"){
+				
 			}else{
 
 				currRb.AddForce(curr.totalForce);
