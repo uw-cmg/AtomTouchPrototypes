@@ -33,6 +33,14 @@ public class UIControl : MonoBehaviour {
 	void Update () {
 	
 	}
+	public void OnHoverConnectionEntry(MonsterAtomConnection mac){
+		mac.start.GetComponent<SpriteRenderer>().color = Color.white;
+		mac.end.GetComponent<SpriteRenderer>().color = Color.white;
+	}
+	public void OnLeaveConnectionEntry(MonsterAtomConnection mac){
+		mac.start.GetComponent<SpriteRenderer>().color = mac.start.normalColor;
+		mac.end.GetComponent<SpriteRenderer>().color = mac.end.normalColor;
+	}
 	public void UpdateTimer(float timeRemaining){
 		timerText.text = Mathf.Max(0.0f, timeRemaining) + "";
 	}
@@ -70,4 +78,5 @@ public class UIControl : MonoBehaviour {
 	public void OnClickTryAgain(){
 		Application.LoadLevel("main");
 	}
+
 }
