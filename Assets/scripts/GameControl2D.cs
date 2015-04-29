@@ -15,7 +15,14 @@ public class GameControl2D : MonoBehaviour {
 	};
 	void Awake(){
 		self = this;
-		timeAllowed = 6000.0f;
+		if(Application.loadedLevelName == "main"){
+			timeAllowed = 60.0f;
+		}else if(Application.loadedLevelName == "ConnectMonsters"){
+			timeAllowed = 180.0f;//3 minutes
+		}else{
+			timeAllowed = 900.0f;//5 minutes
+		}
+		
 	}
 	// Use this for initialization
 	void Start () {
@@ -27,7 +34,16 @@ public class GameControl2D : MonoBehaviour {
 		timeRemaining -= Time.deltaTime;
 		UIControl.self.UpdateTimer(timeRemaining);
 		if(timeRemaining <= 0){
-			UIControl.self.EndGame(false);
+			if(Application.loadedLevelName == "main"){
+				UIControl.self.EndGame(false);
+			}else if (Application.loadedLevelName == "ConnectMonsters"){
+				//check if all paths are connected
+				//each path: + 100
+				//check total number of atoms used
+				//update score
+				
+			}
+			
 		}
 
 		if(gameState == (int)GameState.Running){
