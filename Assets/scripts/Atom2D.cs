@@ -11,6 +11,9 @@ public class Atom2D : MonoBehaviour {
 	public CircleCollider2D cc;
 	public bool visited;
 	public List<Atom2D> neighbours;
+	//for connect monsters game
+	public Color normalColor;
+	public Color pathColor;
 	// Use this for initialization
 	void Awake(){
 		self = this;
@@ -18,6 +21,8 @@ public class Atom2D : MonoBehaviour {
 		if(Application.loadedLevelName == "ConnectMonsters"){
 			neighbours = new List<Atom2D>();
 		}
+		//by default, path color is white
+		pathColor = Color.white;
 	}
 	void Start () {
 		
