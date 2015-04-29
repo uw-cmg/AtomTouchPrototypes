@@ -39,7 +39,11 @@ public class MonsterAtomManager : MonoBehaviour {
 				Debug.DrawLine(maStart.transform.position, maEnd.transform.position,
 					Color.white, 2.0f);
 				Debug.Log(maStart.gameObject.name + " and " + maEnd.gameObject.name + " are connected!");
-				
+				//clear old path rendering
+				while(mac.path.Count > 0){
+					Atom2D node = mac.path.Pop();
+					node.pathHighlighter.SetActive(false);
+				}
 				while(atomPath.Count > 0){
 					Atom2D atomNode = atomPath.Pop();
 					mac.path.Push(atomNode);
