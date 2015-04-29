@@ -25,7 +25,7 @@ public class Goal : MonoBehaviour {
 		transform.position = new Vector3(transform.position.x, 5*Mathf.Sin(radian));
 	}
 	void OnCollisionEnter2D(Collision2D other){
-		if(other.gameObject.name != "targetAtom"){
+		if(other.gameObject.name != "targetAtomNonAnchor"){
 			return;
 		}
 		//win

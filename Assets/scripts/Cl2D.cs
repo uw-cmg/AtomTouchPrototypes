@@ -12,6 +12,7 @@ public class Cl2D : Atom2D {
 		if(Application.loadedLevelName == "ConnectMonsters"){
 			normalColor = new Color(94f/255f, 138f/255f, 99f/255f, 1f);
 			GetComponent<SpriteRenderer>().color = normalColor;
+			pathHighlighter = transform.Find("PathHighlighter").gameObject;
 		}
 			
 	}

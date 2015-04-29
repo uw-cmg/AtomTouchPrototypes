@@ -14,18 +14,23 @@ public class Atom2D : MonoBehaviour {
 	//for connect monsters game
 	public Color normalColor;
 	public Color pathColor;
+	public GameObject pathHighlighter;
 	// Use this for initialization
 	void Awake(){
 		self = this;
 		visited = false;
 		if(Application.loadedLevelName == "ConnectMonsters"){
 			neighbours = new List<Atom2D>();
+			//pathHighlighter = transform.Find("PathHighlighter").gameObject;
 		}
+
 		//by default, path color is white
 		pathColor = Color.white;
 	}
 	void Start () {
-		
+		if(Application.loadedLevelName == "ConnectMonsters"){
+			pathHighlighter = transform.Find("PathHighlighter").gameObject;
+		}
 	}
 	
 	// Update is called once per frame

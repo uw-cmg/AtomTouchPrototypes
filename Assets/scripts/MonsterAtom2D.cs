@@ -9,11 +9,13 @@ public class MonsterAtom2D : Atom2D {
 	}
 	// Use this for initialization
 	void Start () {
+		//base.Start();
 		if(charge == 0){
 			charge = 6;
 		}
 		if(Application.loadedLevelName == "ConnectMonsters"){
 			GetComponent<SpriteRenderer>().color = normalColor;
+			pathHighlighter = transform.Find("PathHighlighter").gameObject;
 		}
 		
 	}

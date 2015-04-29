@@ -43,13 +43,15 @@ public class MonsterAtomManager : MonoBehaviour {
 				while(atomPath.Count > 0){
 					Atom2D atomNode = atomPath.Pop();
 					mac.path.Push(atomNode);
-					atomNode.GetComponent<SpriteRenderer>().color = atomNode.pathColor;
+					atomNode.pathHighlighter.SetActive(true);
+					//atomNode.GetComponent<SpriteRenderer>().color = atomNode.pathColor;
 				}
 			}else{
 				//no path, clear last path,restore normal atom colors
 				while(mac.path.Count > 0){
 					Atom2D node = mac.path.Pop();
-					node.GetComponent<SpriteRenderer>().color = node.normalColor;
+					node.pathHighlighter.SetActive(false);
+					//node.GetComponent<SpriteRenderer>().color = node.normalColor;
 				}
 			}
 		}
