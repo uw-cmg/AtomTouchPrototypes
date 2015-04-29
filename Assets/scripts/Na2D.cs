@@ -9,8 +9,11 @@ public class Na2D : Atom2D{
 		if(UIControl.self != null){
 			btn = UIControl.self.clBtn;
 		}
-		normalColor = new Color(145f/255f, 178f/255f, 214f/255f, 1f);
-		GetComponent<SpriteRenderer>().color = normalColor;	
+		if(Application.loadedLevelName == "ConnectMonsters"){
+			normalColor = new Color(145f/255f, 178f/255f, 214f/255f, 1f);
+			GetComponent<SpriteRenderer>().color = normalColor;	
+		}
+		
 	}
 	
 	// Update is called once per frame

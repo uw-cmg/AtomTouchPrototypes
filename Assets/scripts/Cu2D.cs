@@ -9,8 +9,11 @@ public class Cu2D : Atom2D {
 		if(UIControl.self != null){
 			btn = UIControl.self.cuBtn;
 		}
-		normalColor = new Color(236f/255f, 94f/255f, 129f/255f, 1f);
-		GetComponent<SpriteRenderer>().color = normalColor;	
+		if(Application.loadedLevelName == "ConnectMonsters"){
+			normalColor = new Color(236f/255f, 94f/255f, 129f/255f, 1f);
+			GetComponent<SpriteRenderer>().color = normalColor;	
+		}
+		
 	}
 	
 	// Update is called once per frame

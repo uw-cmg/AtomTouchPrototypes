@@ -12,7 +12,10 @@ public class MonsterAtom2D : Atom2D {
 		if(charge == 0){
 			charge = 6;
 		}
-		GetComponent<SpriteRenderer>().color = normalColor;
+		if(Application.loadedLevelName == "ConnectMonsters"){
+			GetComponent<SpriteRenderer>().color = normalColor;
+		}
+		
 	}
 	
 	// Update is called once per frame
