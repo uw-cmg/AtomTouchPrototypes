@@ -7,8 +7,10 @@ public class MonsterAtomManager : MonoBehaviour {
 	public List<MonsterAtom2D> monsterAnchors;
 	public List<MonsterAtomConnection> atomConnections;
 	private Stack<Atom2D> atomPath;
+	public int totalConnections;
 	void Awake(){
 		self = this;
+		totalConnections = 0;
 		atomConnections = new List<MonsterAtomConnection>();
 		monsterAnchors = new List<MonsterAtom2D>();
 		atomPath = new Stack<Atom2D>();
@@ -25,6 +27,7 @@ public class MonsterAtomManager : MonoBehaviour {
 	IEnumerator CheckMonsterAtomConnections(){
 		while(true){
 			yield return new WaitForSeconds(0.04f);
+			totalConnections = 0;
 			foreach(MonsterAtomConnection mac in atomConnections){
 				Atom2D maStart = mac.start;
 				Atom2D maEnd = mac.end;
@@ -44,6 +47,7 @@ public class MonsterAtomManager : MonoBehaviour {
 
 					Debug.Log(maStart.gameObject.name + " and " + maEnd.gameObject.name + " are connected!");
 					*/
+					totalConnections += 1;
 					if(!mac.HasPath()){
 						//from not having path to having path, plus score
 						GameControl2D.self.UpdateScoreBy(100.0f);
@@ -68,6 +72,9 @@ public class MonsterAtomManager : MonoBehaviour {
 					mac.taskToggle.isOn = false;
 				}
 			}
+			if(totalConnections >= atomConnections.Count){
+				GameControl2D.self.gameState = (int)GameControl2D.GameState.Ended;
+			}
 		}
 		
 	}
@@ -85,7 +92,6 @@ public class MonsterAtomManager : MonoBehaviour {
 		}
 		maStart.visited = true;
 
-		//Queue<Atom2D> path = new Queue<Atom2D>();
 		foreach(Atom2D neighbour in maStart.neighbours){
 			Atom2D neighbourRef = neighbour;
 
@@ -101,12 +107,12 @@ public class MonsterAtomManager : MonoBehaviour {
 		return false;
 
 	}
+	public void EndAllCoroutines(){
+		StopCoroutine(CheckMonsterAtomConnections());
+	}
 	// Use this for initialization
 	void Start () {
 		StartCoroutine(CheckMonsterAtomConnections());
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	}
 }

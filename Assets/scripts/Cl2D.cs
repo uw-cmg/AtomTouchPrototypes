@@ -16,7 +16,6 @@ public class Cl2D : Atom2D {
 		charge = -1;
 		if(UIControl.self != null){
 			btn = UIControl.self.clBtn;
-
 		}
 			
 	}

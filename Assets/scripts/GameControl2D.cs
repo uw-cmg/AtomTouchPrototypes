@@ -96,7 +96,7 @@ public class GameControl2D : MonoBehaviour {
 		}
 		*/
 		//check total number of atoms used
-
+		MonsterAtomManager.self.EndAllCoroutines();
 		score += 100.0f;
 		score -= 5.0f * totalAtomsUsed;
 		UIControl.self.UpdateScore();
@@ -162,7 +162,6 @@ public class GameControl2D : MonoBehaviour {
 		UIControl.self.EnableAtomBtns();
 		UIControl.self.UpdateAtomBtnWithStock(atom);
 		if(Application.loadedLevelName == "ConnectMonsters"){
-			Debug.Log(AtomStaticData.totalRemainingStock);
 			if(AtomStaticData.totalRemainingStock <= 0){
 				//end of game
 				gameState = (int)GameState.Ended;
