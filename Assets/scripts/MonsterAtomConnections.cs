@@ -1,16 +1,35 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 public class MonsterAtomConnection : MonoBehaviour {
 	public MonsterAtom2D start;
 	public MonsterAtom2D end;
-	public Stack<Atom2D> path;
+	public List<Atom2D> path;
+	public Toggle taskToggle; //assigned in inspector
+
+	public bool HasPath(){
+		return path.Count > 0;
+	}
+	public void ShowPath(){
+		start.GetComponent<SpriteRenderer>().color = start.highlightColor;
+		end.GetComponent<SpriteRenderer>().color = end.highlightColor;
+		foreach(Atom2D atomNode in path){
+			atomNode.GetComponent<SpriteRenderer>().color = atomNode.highlightColor;
+		}
+	}
+	public void HidePath(){
+		start.GetComponent<SpriteRenderer>().color = start.normalColor;
+		end.GetComponent<SpriteRenderer>().color = end.normalColor;
+		foreach(Atom2D atomNode in path){
+			atomNode.GetComponent<SpriteRenderer>().color = atomNode.normalColor;
+		}
+	}
 	// Use this for initialization
 	void Start () {
-		path = new Stack<Atom2D>();
+		path = new List<Atom2D>();
 	}
-	
 	// Update is called once per frame
 	void Update () {
 	

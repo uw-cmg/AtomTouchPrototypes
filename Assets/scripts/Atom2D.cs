@@ -13,7 +13,9 @@ public class Atom2D : MonoBehaviour {
 	public List<Atom2D> neighbours;
 	//for connect monsters game
 	public Color normalColor;
-	public Color pathColor;
+	public Color pathColor;//the ring around the atom
+	public Color highlightColor;//overall highlight color
+	
 	public GameObject pathHighlighter;
 	// Use this for initialization
 	void Awake(){

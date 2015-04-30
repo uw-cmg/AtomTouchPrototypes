@@ -10,7 +10,6 @@ public class Cu2D : Atom2D {
 			btn = UIControl.self.cuBtn;
 		}
 		if(Application.loadedLevelName == "ConnectMonsters"){
-			normalColor = new Color(236f/255f, 94f/255f, 129f/255f, 1f);
 			GetComponent<SpriteRenderer>().color = normalColor;
 			pathHighlighter = transform.Find("PathHighlighter").gameObject;
 		}

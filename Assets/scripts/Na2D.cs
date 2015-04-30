@@ -10,7 +10,6 @@ public class Na2D : Atom2D{
 			btn = UIControl.self.clBtn;
 		}
 		if(Application.loadedLevelName == "ConnectMonsters"){
-			normalColor = new Color(145f/255f, 178f/255f, 214f/255f, 1f);
 			GetComponent<SpriteRenderer>().color = normalColor;	
 			pathHighlighter = transform.Find("PathHighlighter").gameObject;
 		}

@@ -41,22 +41,26 @@ public class MonsterAtomManager : MonoBehaviour {
 				Debug.Log(maStart.gameObject.name + " and " + maEnd.gameObject.name + " are connected!");
 				//clear old path rendering
 				while(mac.path.Count > 0){
-					Atom2D node = mac.path.Pop();
+					Atom2D node = mac.path[0];
 					node.pathHighlighter.SetActive(false);
+					mac.path.RemoveAt(0);
 				}
 				while(atomPath.Count > 0){
 					Atom2D atomNode = atomPath.Pop();
-					mac.path.Push(atomNode);
+					mac.path.Add(atomNode);
 					atomNode.pathHighlighter.SetActive(true);
 					//atomNode.GetComponent<SpriteRenderer>().color = atomNode.pathColor;
 				}
+				mac.taskToggle.isOn = true;
 			}else{
 				//no path, clear last path,restore normal atom colors
 				while(mac.path.Count > 0){
-					Atom2D node = mac.path.Pop();
+					Atom2D node = mac.path[0];
 					node.pathHighlighter.SetActive(false);
+					mac.path.RemoveAt(0);
 					//node.GetComponent<SpriteRenderer>().color = node.normalColor;
 				}
+				mac.taskToggle.isOn = false;
 			}
 		}
 	}
