@@ -16,14 +16,15 @@ public class Atom2D : MonoBehaviour {
 	public Color pathColor;//the ring around the atom
 	public Color highlightColor;//overall highlight color
 	
+
 	public GameObject pathHighlighter;
 	// Use this for initialization
-	void Awake(){
+	public virtual void Awake(){
 		self = this;
 		visited = false;
 		if(Application.loadedLevelName == "ConnectMonsters"){
 			neighbours = new List<Atom2D>();
-			//pathHighlighter = transform.Find("PathHighlighter").gameObject;
+			
 		}
 
 		//by default, path color is white

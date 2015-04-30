@@ -12,6 +12,9 @@ public class UIControl : MonoBehaviour {
 	[HideInInspector]public Button cuBtn;
 	[HideInInspector]public Button naBtn;
 	[HideInInspector]public Button clBtn;
+	[HideInInspector]public Text cuBtnText;
+	[HideInInspector]public Text naBtnText;
+	[HideInInspector]public Text clBtnText;
 
 	public Text endGameText;
 	public Text timerText;
@@ -23,10 +26,19 @@ public class UIControl : MonoBehaviour {
 		cuBtn = atomMenuPanelTransform.Find("Cu").gameObject.GetComponent<Button>();
 		naBtn = atomMenuPanelTransform.Find("Na").gameObject.GetComponent<Button>();
 		clBtn = atomMenuPanelTransform.Find("Cl").gameObject.GetComponent<Button>();
+
 	}
 	// Use this for initialization
 	void Start () {
-	
+		if(Application.loadedLevelName == "ConnectMonsters"){
+			cuBtnText = cuBtn.GetComponentInChildren<Text>();
+			naBtnText = naBtn.GetComponentInChildren<Text>();
+			clBtnText = clBtn.GetComponentInChildren<Text>();
+
+			cuBtnText.text = "Cu (" + AtomStaticData.CuRemainingStock + ")";
+			naBtnText.text = "Na (" + AtomStaticData.NaRemainingStock + ")";
+			clBtnText.text = "Cl (" + AtomStaticData.ClRemainingStock + ")";
+		}
 	}
 	
 	// Update is called once per frame
@@ -44,18 +56,41 @@ public class UIControl : MonoBehaviour {
 		//mac.end.GetComponent<SpriteRenderer>().color = mac.end.normalColor;
 	}
 	public void UpdateTimer(float timeRemaining){
-		timerText.text = Mathf.Max(0.0f, timeRemaining) + "";
+		timerText.text = Mathf.Max(0.0f, timeRemaining).ToString("0.0");
 	}
 
 	public void OnAddAtom(GameObject prefab){
 		//fade that atom button
 		//DisableAtomBtn(prefab.GetComponent<Atom2D>());
 		GameControl2D.self.CreateAtom(prefab);
+
 	}
 	public void EnableAtomBtns(bool enable = true){
 		cuBtn.interactable = enable;
 		naBtn.interactable = enable;
 		clBtn.interactable = enable;
+	}
+	public void UpdateAtomBtnWithStock(Atom2D newlyAddedAtom){
+		if(Application.loadedLevelName == "ConnectMonsters"){
+
+			//update button text with name + remaining stock
+			if(newlyAddedAtom is Cu2D){
+				cuBtnText.text = "Cu (" + AtomStaticData.CuRemainingStock+ ")";
+				if(AtomStaticData.CuRemainingStock <= 0){
+					cuBtn.interactable = false;
+				}
+			}else if (newlyAddedAtom is Na2D){
+				naBtnText.text = "Na (" + AtomStaticData.NaRemainingStock + ")";
+				if(AtomStaticData.NaRemainingStock <= 0){
+					naBtn.interactable = false;
+				}
+			}else if (newlyAddedAtom is Cl2D){
+				clBtnText.text = "Cl (" + AtomStaticData.ClRemainingStock + ")";
+				if(AtomStaticData.ClRemainingStock <= 0){
+					clBtn.interactable = false;
+				}
+			} 
+		}
 	}
 	public void OnClickAtomBtn(){
 		EnableAtomBtns(false);

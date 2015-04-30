@@ -23,7 +23,6 @@ public class MonsterAtomManager : MonoBehaviour {
 		}
 	}
 	IEnumerator CheckMonsterAtomConnections(){
-	//void CheckMonsterAtomConnections(){
 		while(true){
 			yield return new WaitForSeconds(0.04f);
 			foreach(MonsterAtomConnection mac in atomConnections){
@@ -99,6 +98,5 @@ public class MonsterAtomManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//CheckMonsterAtomConnections();
 	}
 }

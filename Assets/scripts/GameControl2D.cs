@@ -7,6 +7,9 @@ public class GameControl2D : MonoBehaviour {
 	public float timeAllowed;
 	public float timeRemaining;
 	public int gameState;
+	public float score;
+	public int totalAtomsUsed;
+
 	public enum GameState{
 		Running,
 		AddingAtom,
@@ -26,6 +29,8 @@ public class GameControl2D : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
+		score = 0.0f;
+		totalAtomsUsed = 0;
 		timeRemaining = timeAllowed;
 		gameState = (int)GameState.Running;
 	}
@@ -39,7 +44,14 @@ public class GameControl2D : MonoBehaviour {
 			}else if (Application.loadedLevelName == "ConnectMonsters"){
 				//check if all paths are connected
 				//each path: + 100
+				foreach(MonsterAtomConnection mac in MonsterAtomManager.self.atomConnections){
+					if(mac.HasPath()){
+						score += 100.0f;
+					}
+				}
 				//check total number of atoms used
+				score += 100.0f;
+				score -= 5.0f * totalAtomsUsed;
 				//update score
 
 			}
@@ -116,8 +128,20 @@ public class GameControl2D : MonoBehaviour {
 		}else if (AtomPhysicsWithMonsters.self != null){
 			AtomPhysicsWithMonsters.self.Ions.Add(atomToAdd);
 		}
-		
+		if(Application.loadedLevelName == "ConnectMonsters"){
+			//Atom2D.remainingStock -= 1;
+			if(atom is Cu2D){
+				AtomStaticData.CuRemainingStock -= 1;
+			}else if(atom is Na2D){
+				AtomStaticData.NaRemainingStock -= 1;
+			}else if(atom is Cl2D){
+				AtomStaticData.ClRemainingStock -= 1;
+			}
+
+		}
 		UIControl.self.EnableAtomBtns();
+		UIControl.self.UpdateAtomBtnWithStock(atom);
+		
 	}
 	public void CreateAtom(GameObject prefab){
 		//Debug.Log("creating atom");
@@ -127,6 +151,7 @@ public class GameControl2D : MonoBehaviour {
 		atom.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		atom.GetComponent<Rigidbody2D>().isKinematic = false;
 		SetGameStateAddingAtom(atom);
+		totalAtomsUsed += 1;
 
 	}
 	public void SetGameStateAddingAtom(GameObject atom){
