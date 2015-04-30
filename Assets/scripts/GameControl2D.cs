@@ -41,7 +41,7 @@ public class GameControl2D : MonoBehaviour {
 				//each path: + 100
 				//check total number of atoms used
 				//update score
-				
+
 			}
 			
 		}
@@ -120,7 +120,7 @@ public class GameControl2D : MonoBehaviour {
 		UIControl.self.EnableAtomBtns();
 	}
 	public void CreateAtom(GameObject prefab){
-		Debug.Log("creating atom");
+		//Debug.Log("creating atom");
 		Vector2 spawnPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		Quaternion curRotation = Quaternion.Euler(0, 0, 0);
 		GameObject atom = Instantiate(prefab, spawnPos, curRotation) as GameObject;

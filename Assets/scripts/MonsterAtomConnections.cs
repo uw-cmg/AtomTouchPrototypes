@@ -26,6 +26,13 @@ public class MonsterAtomConnection : MonoBehaviour {
 			atomNode.GetComponent<SpriteRenderer>().color = atomNode.normalColor;
 		}
 	}
+	public void ClearPath(){
+		while(path.Count > 0){
+			Atom2D node = path[0];
+			node.pathHighlighter.SetActive(false);
+			path.RemoveAt(0);
+		}
+	}
 	// Use this for initialization
 	void Start () {
 		path = new List<Atom2D>();

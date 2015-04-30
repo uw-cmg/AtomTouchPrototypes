@@ -22,47 +22,45 @@ public class MonsterAtomManager : MonoBehaviour {
 			atomConnections.Add(g.GetComponent<MonsterAtomConnection>());
 		}
 	}
-	void CheckMonsterAtomConnections(){
-		foreach(MonsterAtomConnection mac in atomConnections){
-			Atom2D maStart = mac.start;
-			Atom2D maEnd = mac.end;
-			//clear visited flags
-			foreach(MonsterAtom2D ma2D in monsterAnchors){
-				ma2D.visited = false;
-			}
-			foreach(GameObject atom in AtomPhysicsWithMonsters.self.Ions){
-				atom.GetComponent<Atom2D>().visited = false;
-			}
-			//DFS
-			bool areConnected = BacktrackMonstersMonsters(ref maStart, ref maEnd);
-			if(areConnected){
-				Debug.DrawLine(maStart.transform.position, maEnd.transform.position,
-					Color.white, 2.0f);
-				Debug.Log(maStart.gameObject.name + " and " + maEnd.gameObject.name + " are connected!");
-				//clear old path rendering
-				while(mac.path.Count > 0){
-					Atom2D node = mac.path[0];
-					node.pathHighlighter.SetActive(false);
-					mac.path.RemoveAt(0);
+	IEnumerator CheckMonsterAtomConnections(){
+	//void CheckMonsterAtomConnections(){
+		while(true){
+			yield return new WaitForSeconds(0.04f);
+			foreach(MonsterAtomConnection mac in atomConnections){
+				Atom2D maStart = mac.start;
+				Atom2D maEnd = mac.end;
+				//clear visited flags
+				foreach(MonsterAtom2D ma2D in monsterAnchors){
+					ma2D.visited = false;
 				}
-				while(atomPath.Count > 0){
-					Atom2D atomNode = atomPath.Pop();
-					mac.path.Add(atomNode);
-					atomNode.pathHighlighter.SetActive(true);
-					//atomNode.GetComponent<SpriteRenderer>().color = atomNode.pathColor;
+				foreach(GameObject atom in AtomPhysicsWithMonsters.self.Ions){
+					atom.GetComponent<Atom2D>().visited = false;
 				}
-				mac.taskToggle.isOn = true;
-			}else{
-				//no path, clear last path,restore normal atom colors
-				while(mac.path.Count > 0){
-					Atom2D node = mac.path[0];
-					node.pathHighlighter.SetActive(false);
-					mac.path.RemoveAt(0);
-					//node.GetComponent<SpriteRenderer>().color = node.normalColor;
+				//DFS
+				bool areConnected = BacktrackMonstersMonsters(ref maStart, ref maEnd);
+				if(areConnected){
+					/*
+					Debug.DrawLine(maStart.transform.position, maEnd.transform.position,
+						Color.white, 2.0f);
+
+					Debug.Log(maStart.gameObject.name + " and " + maEnd.gameObject.name + " are connected!");
+					*/
+					//clear old path rendering
+					mac.ClearPath();
+					while(atomPath.Count > 0){
+						Atom2D atomNode = atomPath.Pop();
+						mac.path.Add(atomNode);
+						atomNode.pathHighlighter.SetActive(true);
+					}
+					mac.taskToggle.isOn = true;
+				}else{
+					//no path, clear last path,restore normal atom colors
+					mac.ClearPath();
+					mac.taskToggle.isOn = false;
 				}
-				mac.taskToggle.isOn = false;
 			}
 		}
+		
 	}
 	//dfs with backtracking wrapper
 	bool BacktrackMonstersMonsters(ref Atom2D maStart, ref Atom2D maEnd){
@@ -96,11 +94,11 @@ public class MonsterAtomManager : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		
+		StartCoroutine(CheckMonsterAtomConnections());
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		CheckMonsterAtomConnections();
+		//CheckMonsterAtomConnections();
 	}
 }
