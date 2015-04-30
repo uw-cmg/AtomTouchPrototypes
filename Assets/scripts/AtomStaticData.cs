@@ -9,12 +9,17 @@ public class AtomStaticData : MonoBehaviour {
 	public static int CuRemainingStock;
 	public static int NaRemainingStock;
 	public static int ClRemainingStock;
+
+	public static int totalRemainingStock;
 	void Awake(){
 		CuStartStock = 10;
 		NaStartStock = 15;
 		ClStartStock = 20;
+
 		CuRemainingStock = CuStartStock;
 		NaRemainingStock = NaStartStock;
 		ClRemainingStock = ClStartStock;
+
+		totalRemainingStock = CuStartStock + NaStartStock + ClStartStock;
 	}
 }

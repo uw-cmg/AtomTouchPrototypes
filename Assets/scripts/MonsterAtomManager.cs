@@ -44,6 +44,11 @@ public class MonsterAtomManager : MonoBehaviour {
 
 					Debug.Log(maStart.gameObject.name + " and " + maEnd.gameObject.name + " are connected!");
 					*/
+					if(!mac.HasPath()){
+						//from not having path to having path, plus score
+						GameControl2D.self.UpdateScoreBy(100.0f);
+					}
+					
 					//clear old path rendering
 					mac.ClearPath();
 					while(atomPath.Count > 0){
@@ -53,6 +58,11 @@ public class MonsterAtomManager : MonoBehaviour {
 					}
 					mac.taskToggle.isOn = true;
 				}else{
+					if(mac.HasPath()){
+						//from having path to not having path
+						//minus score
+						GameControl2D.self.UpdateScoreBy(-100.0f);
+					}
 					//no path, clear last path,restore normal atom colors
 					mac.ClearPath();
 					mac.taskToggle.isOn = false;

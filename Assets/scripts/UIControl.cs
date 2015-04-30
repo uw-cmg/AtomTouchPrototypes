@@ -8,6 +8,7 @@ public class UIControl : MonoBehaviour {
 	public GameObject tryAgainBtn;
 	public GameObject nextLevelBtn;
 	public GameObject atomMenuPanel;
+	public Text scoreText;
 
 	[HideInInspector]public Button cuBtn;
 	[HideInInspector]public Button naBtn;
@@ -66,9 +67,33 @@ public class UIControl : MonoBehaviour {
 
 	}
 	public void EnableAtomBtns(bool enable = true){
-		cuBtn.interactable = enable;
-		naBtn.interactable = enable;
-		clBtn.interactable = enable;
+		if(Application.loadedLevelName != "ConnectMonsters"){
+			cuBtn.interactable = enable;
+			naBtn.interactable = enable;
+			clBtn.interactable = enable;
+		}else{
+			if(AtomStaticData.CuRemainingStock <= 0){
+				cuBtn.interactable = false;
+			}else{
+				cuBtn.interactable = true;
+			}
+
+			if(AtomStaticData.NaRemainingStock <= 0){
+				naBtn.interactable = false;
+			}else{
+				naBtn.interactable = true;
+			}
+
+			if(AtomStaticData.ClRemainingStock <= 0){
+				clBtn.interactable = false;
+			}else{
+				clBtn.interactable = true;
+			}
+		}
+		
+	}
+	public void UpdateScore(){
+		scoreText.text = GameControl2D.self.score.ToString("0.0");
 	}
 	public void UpdateAtomBtnWithStock(Atom2D newlyAddedAtom){
 		if(Application.loadedLevelName == "ConnectMonsters"){
@@ -89,7 +114,8 @@ public class UIControl : MonoBehaviour {
 				if(AtomStaticData.ClRemainingStock <= 0){
 					clBtn.interactable = false;
 				}
-			} 
+			}
+
 		}
 	}
 	public void OnClickAtomBtn(){

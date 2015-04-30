@@ -13,6 +13,7 @@ public class GameControl2D : MonoBehaviour {
 	public enum GameState{
 		Running,
 		AddingAtom,
+		Ended,
 		Win,
 		Lose
 	};
@@ -41,18 +42,9 @@ public class GameControl2D : MonoBehaviour {
 		if(timeRemaining <= 0){
 			if(Application.loadedLevelName == "main"){
 				UIControl.self.EndGame(false);
+				return;
 			}else if (Application.loadedLevelName == "ConnectMonsters"){
-				//check if all paths are connected
-				//each path: + 100
-				foreach(MonsterAtomConnection mac in MonsterAtomManager.self.atomConnections){
-					if(mac.HasPath()){
-						score += 100.0f;
-					}
-				}
-				//check total number of atoms used
-				score += 100.0f;
-				score -= 5.0f * totalAtomsUsed;
-				//update score
+				gameState = (int)GameState.Ended;
 
 			}
 			
@@ -67,21 +59,47 @@ public class GameControl2D : MonoBehaviour {
 			if(!Application.isMobilePlatform){
 				if(Input.GetMouseButtonDown(0)){
 					FinishAddingAtom();
-					gameState = (int)GameState.Running;
 				}
 			}else{
 				if(Input.GetMouseButtonUp(0)){
 					FinishAddingAtom();
-					gameState = (int)GameState.Running;
 				}
 			}
 			
 			
 			//if on mobile: mouse up
 			
+		}else if (gameState == (int)GameState.Ended){
+			
+			if(Time.timeScale == 0){
+				return;
+			}
+			OnGameEnded();
+			Time.timeScale = 0;
+			
 		}
 		
 		
+		
+	}
+	public void UpdateScoreBy(float offset){
+		score += offset;
+		UIControl.self.UpdateScore();
+	}
+	//score calculation, etc
+	void OnGameEnded(){
+		/*
+		foreach(MonsterAtomConnection mac in MonsterAtomManager.self.atomConnections){
+			if(mac.HasPath()){
+				score += 100.0f;
+			}
+		}
+		*/
+		//check total number of atoms used
+
+		score += 100.0f;
+		score -= 5.0f * totalAtomsUsed;
+		UIControl.self.UpdateScore();
 		
 	}
 	void UpdateAtomPositionWithMouse(){
@@ -132,15 +150,28 @@ public class GameControl2D : MonoBehaviour {
 			//Atom2D.remainingStock -= 1;
 			if(atom is Cu2D){
 				AtomStaticData.CuRemainingStock -= 1;
+				AtomStaticData.totalRemainingStock -= 1;
 			}else if(atom is Na2D){
 				AtomStaticData.NaRemainingStock -= 1;
+				AtomStaticData.totalRemainingStock -= 1;
 			}else if(atom is Cl2D){
 				AtomStaticData.ClRemainingStock -= 1;
+				AtomStaticData.totalRemainingStock -= 1;
 			}
-
 		}
 		UIControl.self.EnableAtomBtns();
 		UIControl.self.UpdateAtomBtnWithStock(atom);
+		if(Application.loadedLevelName == "ConnectMonsters"){
+			Debug.Log(AtomStaticData.totalRemainingStock);
+			if(AtomStaticData.totalRemainingStock <= 0){
+				//end of game
+				gameState = (int)GameState.Ended;
+			}else{
+				gameState = (int)GameState.Running;
+			}
+		}else{
+			gameState = (int)GameState.Running;
+		}
 		
 	}
 	public void CreateAtom(GameObject prefab){
