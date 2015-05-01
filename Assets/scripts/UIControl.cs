@@ -81,6 +81,12 @@ public class UIControl : MonoBehaviour {
 			naBtn.interactable = enable;
 			clBtn.interactable = enable;
 		}else{
+			if(GameControl2D.self.gameState == (int)GameControl2D.GameState.AddingAtom){
+				cuBtn.interactable = false;
+				naBtn.interactable = false;
+				clBtn.interactable = false;
+				return;
+			}
 			if(AtomStaticData.CuRemainingStock <= 0){
 				cuBtn.interactable = false;
 			}else{

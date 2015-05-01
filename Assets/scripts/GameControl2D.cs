@@ -44,6 +44,13 @@ public class GameControl2D : MonoBehaviour {
 		if(gameState == (int)GameState.Running){
 			
 		}else if(gameState == (int)GameState.AddingAtom){
+			if(Input.GetButtonDown("Cancel")){//escape
+				Destroy(atomToAdd);
+				gameState = (int)GameState.Running;
+				UIControl.self.EnableAtomBtns();
+				return;
+				
+			}
 			UpdateAtomPositionWithMouse();
 
 			atomToAdd.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
@@ -51,14 +58,7 @@ public class GameControl2D : MonoBehaviour {
 				if(Input.GetMouseButtonDown(0)){
 					FinishAddingAtom();
 				}
-			}else{
-				if(Input.GetMouseButtonUp(0)){
-					FinishAddingAtom();
-				}
 			}
-			
-			
-			//if on mobile: mouse up
 		//this state is only for connect monster atoms	
 		}else if (gameState == (int)GameState.Ended){
 			
@@ -156,8 +156,6 @@ public class GameControl2D : MonoBehaviour {
 				AtomStaticData.totalRemainingStock -= 1;
 			}
 		}
-		UIControl.self.EnableAtomBtns();
-		UIControl.self.UpdateAtomBtnWithStock(atom);
 		if(Application.loadedLevelName == "ConnectMonsters"){
 			if(AtomStaticData.totalRemainingStock <= 0){
 				//end of game
@@ -168,6 +166,11 @@ public class GameControl2D : MonoBehaviour {
 		}else{
 			gameState = (int)GameState.Running;
 		}
+		totalAtomsUsed += 1;
+
+
+		UIControl.self.EnableAtomBtns();
+		UIControl.self.UpdateAtomBtnWithStock(atom);
 		
 	}
 	public void CreateAtom(GameObject prefab){
@@ -178,7 +181,7 @@ public class GameControl2D : MonoBehaviour {
 		atom.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		atom.GetComponent<Rigidbody2D>().isKinematic = false;
 		SetGameStateAddingAtom(atom);
-		totalAtomsUsed += 1;
+		UIControl.self.EnableAtomBtns(false);
 
 	}
 	public void SetGameStateAddingAtom(GameObject atom){
