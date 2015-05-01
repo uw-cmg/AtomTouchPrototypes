@@ -155,6 +155,7 @@ public class GameControl2D : MonoBehaviour {
 				AtomStaticData.ClRemainingStock -= 1;
 				AtomStaticData.totalRemainingStock -= 1;
 			}
+			atom.GetComponent<AudioSource>().Play();
 		}
 		if(Application.loadedLevelName == "ConnectMonsters"){
 			if(AtomStaticData.totalRemainingStock <= 0){
