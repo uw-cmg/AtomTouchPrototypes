@@ -9,6 +9,9 @@ public class UIControl : MonoBehaviour {
 	public GameObject nextLevelBtn;
 	public GameObject atomMenuPanel;
 	public Text scoreText;
+	public Text scoreTextInStat;// score in the end of game stat
+	public Text numberOfConnections;//in end of game stat
+	public Text numberOfUsedAtomsText;//in end of game stat
 
 	[HideInInspector]public Button cuBtn;
 	[HideInInspector]public Button naBtn;
@@ -41,10 +44,16 @@ public class UIControl : MonoBehaviour {
 			clBtnText.text = "Cl (" + AtomStaticData.ClRemainingStock + ")";
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	//for connect monsters
+	public void OnGameEnded(){
+		//update game stats
+		scoreTextInStat.text = GameControl2D.self.score.ToString("0.0");
+		numberOfConnections.text 
+			= MonsterAtomManager.self.totalConnections + "/" 
+			+ MonsterAtomManager.self.atomConnections.Count; 
+		numberOfUsedAtomsText.text = GameControl2D.self.totalAtomsUsed.ToString("0");
+
+		endGamePanel.SetActive(true);
 	}
 	public void OnHoverConnectionEntry(MonsterAtomConnection mac){
 		mac.ShowPath();
@@ -121,6 +130,7 @@ public class UIControl : MonoBehaviour {
 	public void OnClickAtomBtn(){
 		EnableAtomBtns(false);
 	}
+	//for gooey
 	public void EndGame(bool win){
 		if(win){
 			endGameText.text = "You Won nyo >w<!";
@@ -133,7 +143,6 @@ public class UIControl : MonoBehaviour {
 		}
 		
 		endGamePanel.SetActive(true);
-		Time.timeScale = 0;
 	}
 	public void OnClickQuit(){
 		Application.Quit();

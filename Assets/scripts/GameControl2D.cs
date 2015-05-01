@@ -13,9 +13,7 @@ public class GameControl2D : MonoBehaviour {
 	public enum GameState{
 		Running,
 		AddingAtom,
-		Ended,
-		Win,
-		Lose
+		Ended
 	};
 	void Awake(){
 		self = this;
@@ -40,14 +38,7 @@ public class GameControl2D : MonoBehaviour {
 		timeRemaining -= Time.deltaTime;
 		UIControl.self.UpdateTimer(timeRemaining);
 		if(timeRemaining <= 0){
-			if(Application.loadedLevelName == "main"){
-				UIControl.self.EndGame(false);
-				return;
-			}else if (Application.loadedLevelName == "ConnectMonsters"){
-				gameState = (int)GameState.Ended;
-
-			}
-			
+			gameState = (int)GameState.Ended;
 		}
 
 		if(gameState == (int)GameState.Running){
@@ -68,13 +59,19 @@ public class GameControl2D : MonoBehaviour {
 			
 			
 			//if on mobile: mouse up
-			
+		//this state is only for connect monster atoms	
 		}else if (gameState == (int)GameState.Ended){
 			
 			if(Time.timeScale == 0){
 				return;
 			}
-			OnGameEnded();
+			if(Application.loadedLevelName == "main"){
+				UIControl.self.EndGame(false);
+			}else if(Application.loadedLevelName == "ConnectMonsters"){
+				OnGameEnded();
+				UIControl.self.OnGameEnded();
+			}
+			
 			Time.timeScale = 0;
 			
 		}

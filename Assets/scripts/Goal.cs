@@ -29,7 +29,7 @@ public class Goal : MonoBehaviour {
 			return;
 		}
 		//win
-		
+		GameControl2D.self.gameState = (int)GameControl2D.GameState.Ended;
 		UIControl.self.EndGame(true);
 	}
 }
