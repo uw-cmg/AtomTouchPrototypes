@@ -16,10 +16,11 @@ public class UIControl : MonoBehaviour {
 	[HideInInspector]public Button cuBtn;
 	[HideInInspector]public Button naBtn;
 	[HideInInspector]public Button clBtn;
+	[HideInInspector]public Button oBtn;
 	[HideInInspector]public Text cuBtnText;
 	[HideInInspector]public Text naBtnText;
 	[HideInInspector]public Text clBtnText;
-
+	[HideInInspector]public Text oBtnText;
 	public Text endGameText;
 	public Text timerText;
 	void Awake(){
@@ -30,7 +31,9 @@ public class UIControl : MonoBehaviour {
 		cuBtn = atomMenuPanelTransform.Find("Cu").gameObject.GetComponent<Button>();
 		naBtn = atomMenuPanelTransform.Find("Na").gameObject.GetComponent<Button>();
 		clBtn = atomMenuPanelTransform.Find("Cl").gameObject.GetComponent<Button>();
-
+		if(Application.loadedLevelName == "ConnectMonsters"){
+			oBtn = atomMenuPanelTransform.Find("O").gameObject.GetComponent<Button>();
+		}
 	}
 	// Use this for initialization
 	void Start () {
@@ -38,10 +41,12 @@ public class UIControl : MonoBehaviour {
 			cuBtnText = cuBtn.GetComponentInChildren<Text>();
 			naBtnText = naBtn.GetComponentInChildren<Text>();
 			clBtnText = clBtn.GetComponentInChildren<Text>();
+			oBtnText = oBtn.GetComponentInChildren<Text>();
 
 			cuBtnText.text = "Cu (" + AtomStaticData.CuRemainingStock + ")";
 			naBtnText.text = "Na (" + AtomStaticData.NaRemainingStock + ")";
 			clBtnText.text = "Cl (" + AtomStaticData.ClRemainingStock + ")";
+			oBtnText.text = "O (" + AtomStaticData.ORemainingStock + ")";
 		}
 	}
 	//for connect monsters
@@ -80,11 +85,13 @@ public class UIControl : MonoBehaviour {
 			cuBtn.interactable = enable;
 			naBtn.interactable = enable;
 			clBtn.interactable = enable;
+			//oBtn.interactable = enable; //uncomment this only if other scenes have o btn too
 		}else{
 			if(GameControl2D.self.gameState == (int)GameControl2D.GameState.AddingAtom){
 				cuBtn.interactable = false;
 				naBtn.interactable = false;
 				clBtn.interactable = false;
+				oBtn.interactable = false;
 				return;
 			}
 			if(AtomStaticData.CuRemainingStock <= 0){
@@ -103,6 +110,12 @@ public class UIControl : MonoBehaviour {
 				clBtn.interactable = false;
 			}else{
 				clBtn.interactable = true;
+			}
+
+			if(AtomStaticData.ORemainingStock <= 0){
+				oBtn.interactable = false;
+			}else{
+				oBtn.interactable = true;
 			}
 		}
 		
@@ -128,6 +141,11 @@ public class UIControl : MonoBehaviour {
 				clBtnText.text = "Cl (" + AtomStaticData.ClRemainingStock + ")";
 				if(AtomStaticData.ClRemainingStock <= 0){
 					clBtn.interactable = false;
+				}
+			}else if (newlyAddedAtom is O2D){
+				oBtnText.text = "O (" + AtomStaticData.ORemainingStock + ")";
+				if(AtomStaticData.ORemainingStock <= 0){
+					oBtn.interactable = false;
 				}
 			}
 

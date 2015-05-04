@@ -147,14 +147,14 @@ public class GameControl2D : MonoBehaviour {
 			//Atom2D.remainingStock -= 1;
 			if(atom is Cu2D){
 				AtomStaticData.CuRemainingStock -= 1;
-				AtomStaticData.totalRemainingStock -= 1;
 			}else if(atom is Na2D){
 				AtomStaticData.NaRemainingStock -= 1;
-				AtomStaticData.totalRemainingStock -= 1;
 			}else if(atom is Cl2D){
 				AtomStaticData.ClRemainingStock -= 1;
-				AtomStaticData.totalRemainingStock -= 1;
+			}else if(atom is O2D){
+				AtomStaticData.ORemainingStock -= 1;
 			}
+			AtomStaticData.totalRemainingStock -= 1;
 			atom.GetComponent<AudioSource>().Play();
 		}
 		if(Application.loadedLevelName == "ConnectMonsters"){
