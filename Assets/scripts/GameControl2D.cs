@@ -121,7 +121,7 @@ public class GameControl2D : MonoBehaviour {
 		//check if hits another atom
 		Collider2D[] touchingOtherAtoms = Physics2D.OverlapCircleAll(
 			atomPos, 
-			atomToAdd.GetComponent<CircleCollider2D>().radius
+			atomToAdd.GetComponent<CircleCollider2D>().radius * atomToAdd.transform.localScale.x
 		);
 		if(touchingOtherAtoms.Length > 1){
 			return;

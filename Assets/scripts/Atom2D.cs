@@ -15,7 +15,7 @@ public class Atom2D : MonoBehaviour {
 	public Color normalColor;
 	public Color pathColor;//the ring around the atom
 	public Color highlightColor;//overall highlight color
-	
+	public float radius;
 
 	public GameObject pathHighlighter;
 	// Use this for initialization
