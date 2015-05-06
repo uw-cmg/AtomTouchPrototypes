@@ -157,6 +157,8 @@ public class GameControl2D : MonoBehaviour {
 				AtomStaticData.AlRemainingStock -= 1;
 			}else if(atom is K2D){
 				AtomStaticData.KRemainingStock -= 1;
+			}else if(atom is N2D){
+				AtomStaticData.NRemainingStock -= 1;
 			}
 			AtomStaticData.totalRemainingStock -= 1;
 			atom.GetComponent<AudioSource>().Play();

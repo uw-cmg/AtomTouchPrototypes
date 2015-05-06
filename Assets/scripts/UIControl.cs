@@ -19,6 +19,7 @@ public class UIControl : MonoBehaviour {
 	[HideInInspector]public Button oBtn;
 	[HideInInspector]public Button alBtn;
 	[HideInInspector]public Button kBtn;
+	[HideInInspector]public Button nBtn;
 
 	[HideInInspector]public Text cuBtnText;
 	[HideInInspector]public Text naBtnText;
@@ -26,6 +27,7 @@ public class UIControl : MonoBehaviour {
 	[HideInInspector]public Text oBtnText;
 	[HideInInspector]public Text alBtnText;
 	[HideInInspector]public Text kBtnText;
+	[HideInInspector]public Text nBtnText;
 	public Text endGameText;
 	public Text timerText;
 	void Awake(){
@@ -41,6 +43,7 @@ public class UIControl : MonoBehaviour {
 			oBtn = atomMenuPanelTransform.Find("O").gameObject.GetComponent<Button>();
 			alBtn = atomMenuPanelTransform.Find("Al").gameObject.GetComponent<Button>();
 			kBtn = atomMenuPanelTransform.Find("K").gameObject.GetComponent<Button>();
+			nBtn = atomMenuPanelTransform.Find("N").gameObject.GetComponent<Button>();
 		}
 	}
 	// Use this for initialization
@@ -52,6 +55,7 @@ public class UIControl : MonoBehaviour {
 			oBtnText = oBtn.GetComponentInChildren<Text>();
 			alBtnText = alBtn.GetComponentInChildren<Text>();
 			kBtnText = kBtn.GetComponentInChildren<Text>();
+			nBtnText = nBtn.GetComponentInChildren<Text>();
 
 			cuBtnText.text = "Cu (" + AtomStaticData.CuRemainingStock + ")";
 			naBtnText.text = "Na (" + AtomStaticData.NaRemainingStock + ")";
@@ -59,6 +63,7 @@ public class UIControl : MonoBehaviour {
 			oBtnText.text = "O (" + AtomStaticData.ORemainingStock + ")";
 			alBtnText.text = "Al (" + AtomStaticData.AlRemainingStock + ")";
 			kBtnText.text = "K (" + AtomStaticData.KRemainingStock + ")";
+			nBtnText.text = "N (" + AtomStaticData.NRemainingStock + ")";
 		}
 	}
 	//for connect monsters
@@ -106,6 +111,7 @@ public class UIControl : MonoBehaviour {
 				oBtn.interactable = false;
 				alBtn.interactable = false;
 				kBtn.interactable = false;
+				nBtn.interactable = false;
 				return;
 			}
 			if(AtomStaticData.CuRemainingStock <= 0){
@@ -141,6 +147,12 @@ public class UIControl : MonoBehaviour {
 				kBtn.interactable = false;
 			}else{
 				kBtn.interactable = true;
+			}
+
+			if(AtomStaticData.NRemainingStock <= 0){
+				nBtn.interactable = false;
+			}else{
+				nBtn.interactable = true;
 			}
 		}
 		
@@ -178,9 +190,14 @@ public class UIControl : MonoBehaviour {
 					alBtn.interactable = false;
 				}
 			}else if(newlyAddedAtom is K2D){
-				kBtnText.text = "Al (" + AtomStaticData.KRemainingStock + ")";
+				kBtnText.text = "K (" + AtomStaticData.KRemainingStock + ")";
 				if(AtomStaticData.KRemainingStock <= 0){
 					kBtn.interactable = false;
+				}
+			}else if(newlyAddedAtom is N2D){
+				nBtnText.text = "N (" + AtomStaticData.NRemainingStock + ")";
+				if(AtomStaticData.NRemainingStock <= 0){
+					nBtn.interactable = false;
 				}
 			}
 
