@@ -86,7 +86,7 @@ public class MonsterAtomManager : MonoBehaviour {
 		atomPath.Push(maStart);
 		return MonstersAreConnected(ref maStart, ref maEnd);
 	}
-	//Awwww sweet DFS, for real
+	//Awwww sweet DFS with backtracking, for real
 	bool MonstersAreConnected(ref Atom2D maStart, ref Atom2D maEnd){
 		if(maStart == maEnd){
 			return true;

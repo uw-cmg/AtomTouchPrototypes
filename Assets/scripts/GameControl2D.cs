@@ -153,6 +153,8 @@ public class GameControl2D : MonoBehaviour {
 				AtomStaticData.ClRemainingStock -= 1;
 			}else if(atom is O2D){
 				AtomStaticData.ORemainingStock -= 1;
+			}else if(atom is Al2D){
+				AtomStaticData.AlRemainingStock -= 1;
 			}
 			AtomStaticData.totalRemainingStock -= 1;
 			atom.GetComponent<AudioSource>().Play();
