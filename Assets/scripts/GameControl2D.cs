@@ -85,13 +85,6 @@ public class GameControl2D : MonoBehaviour {
 	}
 	//score calculation, etc
 	void OnGameEnded(){
-		/*
-		foreach(MonsterAtomConnection mac in MonsterAtomManager.self.atomConnections){
-			if(mac.HasPath()){
-				score += 100.0f;
-			}
-		}
-		*/
 		//check total number of atoms used
 		MonsterAtomManager.self.EndAllCoroutines();
 		score += 100.0f;
@@ -145,22 +138,8 @@ public class GameControl2D : MonoBehaviour {
 		}
 		if(Application.loadedLevelName == "ConnectMonsters"){
 			//Atom2D.remainingStock -= 1;
-			if(atom is Cu2D){
-				AtomStaticData.CuRemainingStock -= 1;
-			}else if(atom is Na2D){
-				AtomStaticData.NaRemainingStock -= 1;
-			}else if(atom is Cl2D){
-				AtomStaticData.ClRemainingStock -= 1;
-			}else if(atom is O2D){
-				AtomStaticData.ORemainingStock -= 1;
-			}else if(atom is Al2D){
-				AtomStaticData.AlRemainingStock -= 1;
-			}else if(atom is K2D){
-				AtomStaticData.KRemainingStock -= 1;
-			}else if(atom is N2D){
-				AtomStaticData.NRemainingStock -= 1;
-			}
-			AtomStaticData.totalRemainingStock -= 1;
+			AtomStaticData.DecrementStock(atom.name);
+			
 			atom.GetComponent<AudioSource>().Play();
 		}
 		if(Application.loadedLevelName == "ConnectMonsters"){

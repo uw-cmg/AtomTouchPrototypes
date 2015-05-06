@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 public class Atom2D : MonoBehaviour {
 	public static Atom2D self;
+	public string name;
 	public int charge;
-	public Button btn; //corresponding add atom btn
 	public Vector2 totalForce = Vector2.zero;
 	public CircleCollider2D cc;
 	public int visitState;
@@ -35,7 +35,10 @@ public class Atom2D : MonoBehaviour {
 		//by default, path color is white
 		pathColor = Color.white;
 	}
-	protected void SetUp(){
+	protected void SetUp(string name, int charge, float radius){
+		this.name = name;
+		this.charge = charge;
+		this.radius = radius;
 		if(Application.loadedLevelName == "ConnectMonsters"){
 			GetComponent<SpriteRenderer>().color = normalColor;
 			pathHighlighter = transform.Find("PathHighlighter").gameObject;

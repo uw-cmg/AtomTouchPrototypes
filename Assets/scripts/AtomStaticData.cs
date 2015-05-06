@@ -1,42 +1,53 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AtomStaticData : MonoBehaviour {
-	public static int CuStartStock;
-	public static int NaStartStock;
-	public static int ClStartStock;
-	public static int OStartStock;
-	public static int AlStartStock;
-	public static int KStartStock;
-	public static int NStartStock;
-
-	public static int CuRemainingStock;
-	public static int NaRemainingStock;
-	public static int ClRemainingStock;
-	public static int ORemainingStock;
-	public static int AlRemainingStock;
-	public static int KRemainingStock;
-	public static int NRemainingStock;
+	public static Dictionary<string, AtomUIData> AtomDataMap;
+	public string[] atomNames; 
+	public int[] startStocks = {3,10,5,5,7,5,7};
+	public AtomUIData uiDataPrefab;
 
 	public static int totalRemainingStock;
+	public static void DecrementStock(string name){
+		AtomDataMap[name].remainingStock -= 1;
+		totalRemainingStock -= 1;
+	}
 	void Awake(){
-		CuStartStock = 10;
-		NaStartStock = 15;
-		ClStartStock = 20;
-		OStartStock = 10;
-		AlStartStock = 8;
-		KStartStock = 8;
-		NStartStock = 5;
-
-		CuRemainingStock = CuStartStock;
-		NaRemainingStock = NaStartStock;
-		ClRemainingStock = ClStartStock;
-		ORemainingStock = OStartStock;
-		AlRemainingStock = AlStartStock;
-		KRemainingStock = KStartStock;
-		NRemainingStock = NStartStock;
-
-		totalRemainingStock = CuStartStock + NaStartStock + ClStartStock 
-		+ OStartStock + AlStartStock + KStartStock + NStartStock;
+		AtomDataMap = new Dictionary<string, AtomUIData>();
+		if(Application.loadedLevelName == "ConnectMonsters"){
+			atomNames = new string[]{"Al","Cl","Cu","O","N","Na","K"}; 
+			if(atomNames.Length != startStocks.Length){
+				Debug.Log("atomNames and startStocks should have same lengths!");
+				Application.Quit();
+			}
+			for(int i=0; i < atomNames.Length;i++){
+				string atomName = atomNames[i];
+				if(!AtomDataMap.ContainsKey(atomName)){
+					AtomUIData atomUIData = Instantiate(uiDataPrefab) as AtomUIData;
+					atomUIData.CreateSelf(atomName, startStocks[i]);
+					totalRemainingStock += startStocks[i];
+					AtomDataMap.Add(atomName, atomUIData);
+				}else{
+					Debug.Log(atomName + " already exists!");
+				}
+				
+			}
+		}else if(Application.loadedLevelName == "main"){
+			atomNames = new string[]{"Cl","Cu","Na"}; 
+			totalRemainingStock = int.MaxValue;
+			for(int i=0; i < atomNames.Length;i++){
+				string atomName = atomNames[i];
+				if(!AtomDataMap.ContainsKey(atomName)){
+					AtomUIData atomUIData = Instantiate(uiDataPrefab) as AtomUIData;
+					atomUIData.CreateSelf(atomName, int.MaxValue);
+					
+					AtomDataMap.Add(atomName, atomUIData);
+				}else{
+					Debug.Log(atomName + " already exists!");
+				}
+				
+			}
+		}
 	}
 }
