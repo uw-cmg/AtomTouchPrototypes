@@ -9,7 +9,12 @@ public class Atom2D : MonoBehaviour {
 	public Button btn; //corresponding add atom btn
 	public Vector2 totalForce = Vector2.zero;
 	public CircleCollider2D cc;
-	public bool visited;
+	public int visitState;
+	public enum DFSState{
+		visited,
+		unvisited,
+		visiting
+	};
 	public List<Atom2D> neighbours;
 	//for connect monsters game
 	public Color normalColor;
@@ -21,7 +26,7 @@ public class Atom2D : MonoBehaviour {
 	// Use this for initialization
 	public virtual void Awake(){
 		self = this;
-		visited = false;
+		visitState = (int)DFSState.unvisited;
 		if(Application.loadedLevelName == "ConnectMonsters"){
 			neighbours = new List<Atom2D>();
 			
@@ -29,6 +34,17 @@ public class Atom2D : MonoBehaviour {
 
 		//by default, path color is white
 		pathColor = Color.white;
+	}
+	protected void SetUp(){
+		if(Application.loadedLevelName == "ConnectMonsters"){
+			GetComponent<SpriteRenderer>().color = normalColor;
+			pathHighlighter = transform.Find("PathHighlighter").gameObject;
+			float scaledRadius = radius / 1000 * 4;
+			transform.localScale = new Vector3(scaledRadius, scaledRadius, scaledRadius);
+			if(gameObject.tag != "AtomScriptLoader"){
+				cc = GetComponent<CircleCollider2D>();
+			}
+		}
 	}
 	void Start () {
 		if(Application.loadedLevelName == "ConnectMonsters"){

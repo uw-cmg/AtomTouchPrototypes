@@ -33,10 +33,10 @@ public class MonsterAtomManager : MonoBehaviour {
 				Atom2D maEnd = mac.end;
 				//clear visited flags
 				foreach(MonsterAtom2D ma2D in monsterAnchors){
-					ma2D.visited = false;
+					ma2D.visitState = (int)Atom2D.DFSState.unvisited;
 				}
 				foreach(GameObject atom in AtomPhysicsWithMonsters.self.Ions){
-					atom.GetComponent<Atom2D>().visited = false;
+					atom.GetComponent<Atom2D>().visitState = (int)Atom2D.DFSState.unvisited;
 				}
 				//DFS
 				bool areConnected = BacktrackMonstersMonsters(ref maStart, ref maEnd);
@@ -55,6 +55,7 @@ public class MonsterAtomManager : MonoBehaviour {
 					
 					//clear old path rendering
 					mac.ClearPath();
+					//if has path, copy path from atom path to mac.path
 					while(atomPath.Count > 0){
 						Atom2D atomNode = atomPath.Pop();
 						mac.path.Add(atomNode);
@@ -62,6 +63,7 @@ public class MonsterAtomManager : MonoBehaviour {
 					}
 					mac.taskToggle.isOn = true;
 				}else{
+					//if had path last frame but no longer has it
 					if(mac.HasPath()){
 						//from having path to not having path
 						//minus score
@@ -87,23 +89,29 @@ public class MonsterAtomManager : MonoBehaviour {
 	//Awwww sweet DFS, for real
 	bool MonstersAreConnected(ref Atom2D maStart, ref Atom2D maEnd){
 		if(maStart == maEnd){
-			atomPath.Push(maEnd);
 			return true;
 		}
-		maStart.visited = true;
+		maStart.visitState = (int)Atom2D.DFSState.visiting;
 
 		foreach(Atom2D neighbour in maStart.neighbours){
 			Atom2D neighbourRef = neighbour;
 
-			if(!neighbourRef.visited){
+			if(neighbourRef.visitState == (int)Atom2D.DFSState.unvisited){
 				atomPath.Push(neighbourRef);
 				if(MonstersAreConnected(ref neighbourRef, ref maEnd)){
 					return true;
 				}
 			}
 		}
-		if(atomPath.Count > 0)
-			atomPath.Pop();
+		maStart.visitState = (int)Atom2D.DFSState.visited;
+		Atom2D curr;
+		while(atomPath.Count > 0){
+			curr = atomPath.Pop();
+			if(curr == maStart){
+				break;
+			}
+		}
+		
 		return false;
 
 	}
