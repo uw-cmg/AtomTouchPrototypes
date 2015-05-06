@@ -4,7 +4,7 @@ using System.Collections;
 public class O2D : Atom2D{
 	public override void Awake(){
 		base.Awake();
-		radius = 126f;//pico meters
+		radius = 140f;//pico meters
 		SetUp();
 	}
 	// Use this for initialization

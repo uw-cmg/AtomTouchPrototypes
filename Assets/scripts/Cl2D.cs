@@ -4,7 +4,7 @@ using System.Collections;
 public class Cl2D : Atom2D {
 	public override void Awake(){
 		base.Awake();
-		radius = 167f;
+		radius = 181f;
 		SetUp();
 
 	}

@@ -5,7 +5,7 @@ public class Cu2D : Atom2D {
 	public override void Awake(){
 		base.Awake();
 		//data: http://en.wikipedia.org/wiki/Ionic_radius
-		radius = 87f;
+		radius = 73f;
 		SetUp();
 	}
 	// Use this for initialization

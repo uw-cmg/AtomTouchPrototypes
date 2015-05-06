@@ -4,7 +4,7 @@ using System.Collections;
 public class Al2D : Atom2D {
 	void Awake(){
 		base.Awake();
-		radius = 67.5f;
+		radius = 53.5f;
 		SetUp();
 	}
 	// Use this for initialization
