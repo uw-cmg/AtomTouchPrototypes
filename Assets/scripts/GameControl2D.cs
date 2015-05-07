@@ -164,6 +164,7 @@ public class GameControl2D : MonoBehaviour {
 		Vector2 spawnPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		Quaternion curRotation = Quaternion.Euler(0, 0, 0);
 		GameObject atom = Instantiate(prefab, spawnPos, curRotation) as GameObject;
+
 		atom.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 		atom.GetComponent<Rigidbody2D>().isKinematic = false;
 		SetGameStateAddingAtom(atom);

@@ -3,8 +3,10 @@ using System.Collections;
 
 public class AnchorAtom : MonoBehaviour {
 	public float lastClickTime;
+	public bool clickIsForAddingAtom;
 	// Use this for initialization
 	void Start () {
+		clickIsForAddingAtom = true;
 		lastClickTime = -1.0f;
 	}
 	
@@ -14,15 +16,17 @@ public class AnchorAtom : MonoBehaviour {
 	}
 	
 	void OnMouseDown(){
-		if(lastClickTime <= 0){
+		if(clickIsForAddingAtom){
+			clickIsForAddingAtom = false;
+			lastClickTime = -1.0f;
+		}else if(lastClickTime <= 0){
 			lastClickTime = Time.time;
-		}else{
-			if(Time.time - lastClickTime < 0.3f){
-				Debug.Log("double click");
-				ToggleAnchor();
-			}
+		}else if(Time.time - lastClickTime < 0.3f){
+			Debug.Log("double click");
+			ToggleAnchor();
 			lastClickTime = -1.0f;
 		}
+		
 	}
 	void ToggleAnchor(){
 		if(gameObject.tag == "Atom"){
