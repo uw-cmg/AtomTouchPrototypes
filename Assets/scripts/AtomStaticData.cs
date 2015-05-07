@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class AtomStaticData : MonoBehaviour {
 	public static Dictionary<string, AtomUIData> AtomDataMap;
 	public string[] atomNames; 
-	public int[] startStocks = {3,10,5,5,7,5,7};
+	public int[] startStocks;
 	public AtomUIData uiDataPrefab;
 
 	public static int totalRemainingStock;
@@ -16,7 +16,8 @@ public class AtomStaticData : MonoBehaviour {
 	void Awake(){
 		AtomDataMap = new Dictionary<string, AtomUIData>();
 		if(Application.loadedLevelName == "ConnectMonsters"){
-			atomNames = new string[]{"Al","Cl","Cu","O","N","Na","K"}; 
+			atomNames = new string[]{"Al","Cl","Cu","O","N","Na","K", "I"}; 
+			startStocks = new int[]{3,10,5,5,7,5,7,3};
 			if(atomNames.Length != startStocks.Length){
 				Debug.Log("atomNames and startStocks should have same lengths!");
 				Application.Quit();
