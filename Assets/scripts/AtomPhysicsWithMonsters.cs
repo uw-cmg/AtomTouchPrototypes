@@ -98,8 +98,12 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 				other.totalForce += -forceDireciton * currToOther / distance / distance; 
 			}
 			if(temperature > 1000.0f ){
-				//curr.lastRandWalkForce = RandDirection() * Mathf.Sqrt(2f*currRb.mass)/Time.deltaTime;
-				//curr.totalForce += curr.lastRandWalkForce;
+				if(!curr.pathHighlighter.activeSelf){
+					//curr atom is not in a path
+					curr.lastRandWalkForce = RandDirection() * Mathf.Sqrt(2f*0.5f*currRb.mass)/Time.fixedDeltaTime;
+					curr.totalForce += curr.lastRandWalkForce;
+				}
+				
 				/*
 				if(updateCounter > 2){
 					updateCounter = 0;
