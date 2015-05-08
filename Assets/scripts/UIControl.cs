@@ -8,6 +8,8 @@ public class UIControl : MonoBehaviour {
 	public GameObject tryAgainBtn;
 	public GameObject nextLevelBtn;
 	public GameObject atomMenuPanel;
+	public Scrollbar temperatureScroll;
+
 	public Text scoreText;
 	public Text scoreTextInStat;// score in the end of game stat
 	public Text numberOfConnections;//in end of game stat
@@ -74,6 +76,9 @@ public class UIControl : MonoBehaviour {
 			}
 		}
 		
+	}
+	public void OnScrollbarTemperatureChanged(){
+		AtomPhysicsWithMonsters.self.temperature = temperatureScroll.value * 2000f;
 	}
 	public void UpdateScore(){
 		scoreText.text = GameControl2D.self.score.ToString("0.0");

@@ -7,7 +7,6 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 	public List<GameObject> Ions;
 	public GameObject[] monsterAnchorAtoms;
 	public float temperature;
-	public int updateCounter;
 	void Awake(){
 		self = this;
 		Application.targetFrameRate = 150;
@@ -22,7 +21,6 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		updateCounter = 6;
 		Time.timeScale = 1;
 		Physics2D.IgnoreLayerCollision(
 			LayerMask.NameToLayer("AtomDestroyer"),
@@ -34,10 +32,7 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 		combinedForceDir.Normalize();
 		float randDegree = Random.Range(-60f, 60f);
 
-		float x = Random.Range(-10f,10f);
-		float y = Random.Range(-10f,10f);
-		Vector2 dir = new Vector2(x,y);
-		dir = Quaternion.Euler(0,0,randDegree) * combinedForceDir;
+		Vector2 dir = Quaternion.Euler(0,0,randDegree) * combinedForceDir;
 		dir.Normalize();
 		return dir;
 
@@ -45,7 +40,6 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		updateCounter ++;
 		for(int i=0; i < Ions.Count;i++){
 			if(Ions[i] == null){
 				Ions.Remove(Ions[i]);
@@ -102,24 +96,14 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 				//Debug.Log(otherRb.velocity);
 				other.totalForce += -forceDireciton * currToOther / distance / distance; 
 			}
-			if(temperature > 1000.0f ){
+			if(temperature > 0.0f ){
 				if(!curr.pathHighlighter.activeSelf){
 					//curr atom is not in a path
 					curr.lastRandWalkForce = RandDirection(curr.totalForce) 
-						* Mathf.Sqrt(2f*currRb.mass)/Time.fixedDeltaTime;
+						* Mathf.Sqrt(2f*(temperature/1000f) *currRb.mass)/Time.fixedDeltaTime;
 					curr.totalForce += curr.lastRandWalkForce;
 				}
 				
-				/*
-				if(updateCounter > 2){
-					updateCounter = 0;
-					curr.lastRandWalkForce = RandDirection() * Mathf.Sqrt(2f*currRb.mass)/Time.deltaTime;
-					//Debug.Log(curr.lastRandWalkForce);
-					curr.totalForce += curr.lastRandWalkForce;
-				}else{
-					curr.totalForce += curr.lastRandWalkForce;
-				}
-				*/
 				
 			}
 			//currRb.velocity = curr.vel;
