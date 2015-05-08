@@ -29,10 +29,15 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 			LayerMask.NameToLayer("AtomAttracter")
 		);
 	}
-	public  Vector2 RandDirection(){
+	public  Vector2 RandDirection(Vector2 combinedForce){
+		Vector2 combinedForceDir = combinedForce;
+		combinedForceDir.Normalize();
+		float randDegree = Random.Range(-60f, 60f);
+
 		float x = Random.Range(-10f,10f);
 		float y = Random.Range(-10f,10f);
 		Vector2 dir = new Vector2(x,y);
+		dir = Quaternion.Euler(0,0,randDegree) * combinedForceDir;
 		dir.Normalize();
 		return dir;
 
@@ -100,7 +105,8 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 			if(temperature > 1000.0f ){
 				if(!curr.pathHighlighter.activeSelf){
 					//curr atom is not in a path
-					curr.lastRandWalkForce = RandDirection() * Mathf.Sqrt(2f*0.5f*currRb.mass)/Time.fixedDeltaTime;
+					curr.lastRandWalkForce = RandDirection(curr.totalForce) 
+						* Mathf.Sqrt(2f*currRb.mass)/Time.fixedDeltaTime;
 					curr.totalForce += curr.lastRandWalkForce;
 				}
 				
