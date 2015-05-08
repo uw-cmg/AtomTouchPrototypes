@@ -29,7 +29,9 @@ public class MonsterAtomConnection : MonoBehaviour {
 	public void ClearPath(){
 		while(path.Count > 0){
 			Atom2D node = path[0];
-			node.pathHighlighter.SetActive(false);
+			if(node != null){
+				node.pathHighlighter.SetActive(false);
+			}
 			path.RemoveAt(0);
 		}
 	}

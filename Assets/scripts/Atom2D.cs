@@ -21,7 +21,7 @@ public class Atom2D : MonoBehaviour {
 	public Color pathColor;//the ring around the atom
 	public Color highlightColor;//overall highlight color
 	public float radius;
-
+	public Vector2 lastRandWalkForce;
 	public GameObject pathHighlighter;
 	// Use this for initialization
 	public virtual void Awake(){
@@ -55,10 +55,6 @@ public class Atom2D : MonoBehaviour {
 		}
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 	void OnCollisionEnter2D(Collision2D collision){
 		if(Application.loadedLevelName != "ConnectMonsters")return;
 		if(collision.gameObject.tag != "Atom"

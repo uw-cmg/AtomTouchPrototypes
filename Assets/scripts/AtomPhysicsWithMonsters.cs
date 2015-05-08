@@ -6,6 +6,8 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 	public static AtomPhysicsWithMonsters self;
 	public List<GameObject> Ions;
 	public GameObject[] monsterAnchorAtoms;
+	public float temperature;
+	public int updateCounter;
 	void Awake(){
 		self = this;
 		Application.targetFrameRate = 150;
@@ -20,20 +22,25 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
+		updateCounter = 6;
 		Time.timeScale = 1;
 		Physics2D.IgnoreLayerCollision(
 			LayerMask.NameToLayer("AtomDestroyer"),
 			LayerMask.NameToLayer("AtomAttracter")
 		);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public  Vector2 RandDirection(){
+		float x = Random.Range(-10f,10f);
+		float y = Random.Range(-10f,10f);
+		Vector2 dir = new Vector2(x,y);
+		dir.Normalize();
+		return dir;
+
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		updateCounter ++;
 		for(int i=0; i < Ions.Count;i++){
 			if(Ions[i] == null){
 				Ions.Remove(Ions[i]);
@@ -81,10 +88,29 @@ public class AtomPhysicsWithMonsters : MonoBehaviour {
 				float currToOther = otherToCurr;
 				//Vector3 force = (currRb.mass * currRb.velocity - otherRb.mass * otherRb.velocity)/Time.deltaTime;
 				forceDireciton.Normalize();
+				//ft = m * deltaV
+				//deltaV = sqrt(2C/m)
+				//ft = sqrt(2cm)
 
 				curr.totalForce += forceDireciton * otherToCurr / distance / distance;
+
 				//Debug.Log(otherRb.velocity);
 				other.totalForce += -forceDireciton * currToOther / distance / distance; 
+			}
+			if(temperature > 1000.0f ){
+				//curr.lastRandWalkForce = RandDirection() * Mathf.Sqrt(2f*currRb.mass)/Time.deltaTime;
+				//curr.totalForce += curr.lastRandWalkForce;
+				/*
+				if(updateCounter > 2){
+					updateCounter = 0;
+					curr.lastRandWalkForce = RandDirection() * Mathf.Sqrt(2f*currRb.mass)/Time.deltaTime;
+					//Debug.Log(curr.lastRandWalkForce);
+					curr.totalForce += curr.lastRandWalkForce;
+				}else{
+					curr.totalForce += curr.lastRandWalkForce;
+				}
+				*/
+				
 			}
 			//currRb.velocity = curr.vel;
 			currRb.velocity = Vector3.zero;

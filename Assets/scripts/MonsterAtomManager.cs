@@ -47,7 +47,6 @@ public class MonsterAtomManager : MonoBehaviour {
 
 					Debug.Log(maStart.gameObject.name + " and " + maEnd.gameObject.name + " are connected!");
 					*/
-					totalConnections += 1;
 					if(!mac.HasPath()){
 						//from not having path to having path, plus score
 						GameControl2D.self.UpdateScoreBy(100.0f);
@@ -55,13 +54,29 @@ public class MonsterAtomManager : MonoBehaviour {
 					
 					//clear old path rendering
 					mac.ClearPath();
+					bool pathBroken = false;
 					//if has path, copy path from atom path to mac.path
-					while(atomPath.Count > 0){
+					while(atomPath.Count > 0 && !pathBroken){
 						Atom2D atomNode = atomPath.Pop();
-						mac.path.Add(atomNode);
-						atomNode.pathHighlighter.SetActive(true);
+						if(atomNode == null){
+							//this happens when an atom moves out of viewport
+							//and has been destroyed
+							//which means the path is now broken
+							pathBroken = true;
+						}else{
+							mac.path.Add(atomNode);
+							atomNode.pathHighlighter.SetActive(true);
+						}
+						
 					}
-					mac.taskToggle.isOn = true;
+					if(pathBroken){
+						mac.ClearPath();
+						mac.taskToggle.isOn = false;
+					}else{
+						mac.taskToggle.isOn = true;
+						totalConnections += 1;
+					}
+					
 				}else{
 					//if had path last frame but no longer has it
 					if(mac.HasPath()){

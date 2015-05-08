@@ -32,14 +32,5 @@ public class MonsterAtom2D : Atom2D {
 			highlightColor = new Color(255f/255f, 228f/255f, 183f/255f, 1f);
 		}
 	}
-	// Use this for initialization
-	void Start () {
-		//base.Start();
-		
-		
-	}
 	
-	// Update is called once per frame
-	void Update () {
-	}
 }
