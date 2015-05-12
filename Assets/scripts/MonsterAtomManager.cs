@@ -83,6 +83,7 @@ public class MonsterAtomManager : MonoBehaviour {
 						//from having path to not having path
 						//minus score
 						GameControl2D.self.UpdateScoreBy(-100.0f);
+						totalConnections -= 1;
 					}
 					//no path, clear last path,restore normal atom colors
 					mac.ClearPath();
