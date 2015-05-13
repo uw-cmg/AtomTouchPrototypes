@@ -9,13 +9,7 @@ public class Atom2D : MonoBehaviour {
 	public int charge;
 	public Vector2 totalForce = Vector2.zero;
 	public CircleCollider2D cc;
-	public int visitState;
-	public enum DFSState{
-		visited,
-		unvisited,
-		visiting
-	};
-	public List<Atom2D> neighbours;
+	
 	//for connect monsters game
 	public Color normalColor;
 	public Color pathColor;//the ring around the atom
@@ -26,12 +20,6 @@ public class Atom2D : MonoBehaviour {
 	// Use this for initialization
 	public virtual void Awake(){
 		self = this;
-		visitState = (int)DFSState.unvisited;
-		if(Application.loadedLevelName == "ConnectMonsters"){
-			neighbours = new List<Atom2D>();
-			
-		}
-
 		//by default, path color is white
 		pathColor = Color.white;
 	}
@@ -44,9 +32,6 @@ public class Atom2D : MonoBehaviour {
 			pathHighlighter = transform.Find("PathHighlighter").gameObject;
 			float scaledRadius = radius / 1000 * 4;
 			transform.localScale = new Vector3(scaledRadius, scaledRadius, scaledRadius);
-			if(gameObject.tag != "AtomScriptLoader"){
-				cc = GetComponent<CircleCollider2D>();
-			}
 		}
 	}
 	void Start () {
@@ -54,19 +39,28 @@ public class Atom2D : MonoBehaviour {
 			pathHighlighter = transform.Find("PathHighlighter").gameObject;
 		}
 	}
-	
+	/*
 	void OnCollisionEnter2D(Collision2D collision){
 		if(Application.loadedLevelName != "ConnectMonsters")return;
 		if(collision.gameObject.tag != "Atom"
 			&& collision.gameObject.tag != "MonsterAnchor")return;
-		neighbours.Add(collision.gameObject.GetComponent<Atom2D>());
+		
+		if(this.enabled && !neighbours.Contains(collision.gameObject.GetComponent<Atom2D>())){
+			Debug.Log("entering");
+			neighbours.Add(collision.gameObject.GetComponent<Atom2D>());
+		}
 	}
 	void OnCollisionExit2D(Collision2D collision){
 		if(Application.loadedLevelName != "ConnectMonsters")return;
 		if(collision.gameObject.tag != "Atom"
 			&& collision.gameObject.tag != "MonsterAnchor")return;
-		neighbours.Remove(collision.gameObject.GetComponent<Atom2D>());
+		if(this.enabled){
+			Debug.Log("removing");
+			neighbours.Remove(collision.gameObject.GetComponent<Atom2D>());
+		}
+		
 	}
+	*/
 	//gives a random vel
 	public void Kick(){
 		float lo = -15.50f;

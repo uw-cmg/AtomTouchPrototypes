@@ -4,20 +4,19 @@ using System.Collections.Generic;
 
 public class MonsterAtomManager : MonoBehaviour {
 	public static MonsterAtomManager self;
-	public List<MonsterAtom2D> monsterAnchors;
+	public List<AtomCollision> monsterAnchors;
 	public List<MonsterAtomConnection> atomConnections;
-	private Stack<Atom2D> atomPath;
+	private Stack<AtomCollision> atomPath;
 	public int totalConnections;
 	void Awake(){
 		self = this;
 		totalConnections = 0;
 		atomConnections = new List<MonsterAtomConnection>();
-		monsterAnchors = new List<MonsterAtom2D>();
-		atomPath = new Stack<Atom2D>();
-		Debug.Log("atom path init");
+		monsterAnchors = new List<AtomCollision>();
+		atomPath = new Stack<AtomCollision>();
 		GameObject[] monsterAnchorArr = GameObject.FindGameObjectsWithTag("MonsterAnchor");
 		foreach(GameObject g in monsterAnchorArr){
-			monsterAnchors.Add(g.GetComponent<MonsterAtom2D>());
+			monsterAnchors.Add(g.GetComponent<AtomCollision>());
 		}
 		GameObject[] connectionObjs = GameObject.FindGameObjectsWithTag("MonsterAtomConnection");
 		foreach(GameObject g in connectionObjs){
@@ -29,14 +28,15 @@ public class MonsterAtomManager : MonoBehaviour {
 			yield return new WaitForSeconds(0.04f);
 			totalConnections = 0;
 			foreach(MonsterAtomConnection mac in atomConnections){
-				Atom2D maStart = mac.start;
-				Atom2D maEnd = mac.end;
+				AtomCollision maStart = mac.start;
+				AtomCollision maEnd = mac.end;
 				//clear visited flags
-				foreach(MonsterAtom2D ma2D in monsterAnchors){
-					ma2D.visitState = (int)Atom2D.DFSState.unvisited;
+				foreach(AtomCollision ma2D in monsterAnchors){
+					ma2D.visitState = (int)AtomCollision.DFSState.unvisited;
 				}
 				foreach(GameObject atom in AtomPhysicsWithMonsters.self.Ions){
-					atom.GetComponent<Atom2D>().visitState = (int)Atom2D.DFSState.unvisited;
+					atom.GetComponent<AtomCollision>().visitState 
+						= (int)AtomCollision.DFSState.unvisited;
 				}
 				//DFS
 				bool areConnected = BacktrackMonstersMonsters(ref maStart, ref maEnd);
@@ -57,7 +57,7 @@ public class MonsterAtomManager : MonoBehaviour {
 					bool pathBroken = false;
 					//if has path, copy path from atom path to mac.path
 					while(atomPath.Count > 0 && !pathBroken){
-						Atom2D atomNode = atomPath.Pop();
+						AtomCollision atomNode = atomPath.Pop();
 						if(atomNode == null){
 							//this happens when an atom moves out of viewport
 							//and has been destroyed
@@ -65,11 +65,12 @@ public class MonsterAtomManager : MonoBehaviour {
 							pathBroken = true;
 						}else{
 							mac.path.Add(atomNode);
-							atomNode.pathHighlighter.SetActive(true);
+							atomNode.GetComponent<Atom2D>().pathHighlighter.SetActive(true);
 						}
 						
 					}
 					if(pathBroken){
+						Debug.Log("path broken");
 						mac.ClearPath();
 						mac.taskToggle.isOn = false;
 					}else{
@@ -97,30 +98,30 @@ public class MonsterAtomManager : MonoBehaviour {
 		
 	}
 	//dfs with backtracking wrapper
-	bool BacktrackMonstersMonsters(ref Atom2D maStart, ref Atom2D maEnd){
+	bool BacktrackMonstersMonsters(ref AtomCollision maStart, ref AtomCollision maEnd){
 		atomPath.Clear();
 		atomPath.Push(maStart);
 		return MonstersAreConnected(ref maStart, ref maEnd);
 	}
 	//Awwww sweet DFS with backtracking, for real
-	bool MonstersAreConnected(ref Atom2D maStart, ref Atom2D maEnd){
+	bool MonstersAreConnected(ref AtomCollision maStart, ref AtomCollision maEnd){
 		if(maStart == maEnd){
 			return true;
 		}
-		maStart.visitState = (int)Atom2D.DFSState.visiting;
+		maStart.visitState = (int)AtomCollision.DFSState.visiting;
 
-		foreach(Atom2D neighbour in maStart.neighbours){
-			Atom2D neighbourRef = neighbour;
+		foreach(AtomCollision neighbour in maStart.neighbours){
+			AtomCollision neighbourRef = neighbour;
 
-			if(neighbourRef.visitState == (int)Atom2D.DFSState.unvisited){
+			if(neighbourRef.visitState == (int)AtomCollision.DFSState.unvisited){
 				atomPath.Push(neighbourRef);
 				if(MonstersAreConnected(ref neighbourRef, ref maEnd)){
 					return true;
 				}
 			}
 		}
-		maStart.visitState = (int)Atom2D.DFSState.visited;
-		Atom2D curr;
+		maStart.visitState = (int)AtomCollision.DFSState.visited;
+		AtomCollision curr;
 		while(atomPath.Count > 0){
 			curr = atomPath.Pop();
 			if(curr == maStart){
